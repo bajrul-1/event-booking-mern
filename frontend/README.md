@@ -1,72 +1,61 @@
-# Event Booking Platform
+# Event Booking Platform - Frontend
 
-A full-stack MERN application for booking and managing events.  
-Frontend is built with **React + Vite + TailwindCSS 4.x + Redux + Formik + Yup**.  
-Backend is built with **Node.js + Express + MongoDB**.
+This is the frontend client for the Event Booking Platform within the MERN stack.
 
----
+## 🚀 Getting Started
 
-## 👤 Author
-**Bajrul Middya**
+### Prerequisites
 
----
+-   [Node.js](https://nodejs.org/) (v14 or higher)
 
-## 📂 Project Structure
+### Installation
 
-event-booking-platform/
-│── backend/ # Express + MongoDB
-│ ├── routes/ # user, event, booking, category, payment routers
-│ └── controllers/
-│
-│── frontend/ # React + Vite + TailwindCSS
-│ ├── src/
-│ ├── index.css
-│ └── App.jsx
-│
-└── README.md
+1.  Navigate to the frontend directory:
+    ```bash
+    cd frontend
+    ```
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
 
-<========================================================>
+### ⚙️ Environment Variables
 
-# Frontend Setup
+Create a `.env` file in the `frontend` directory and add the following variables:
 
-<===|| Install ||===>
-cd frontend
-npm install
+```env
+# Clerk Authentication
+VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
 
-<===|| Development ||===>
+# Backend API URL
+VITE_API_URL=http://localhost:5000
+
+# Razorpay
+VITE_RAZORPAY_KEY_ID=your_razorpay_key_id
+```
+
+### 🏃‍♂️ Running the Application
+
+Start the development server:
+
+```bash
 npm run dev
+```
+The application will run on `http://localhost:5173` (default Vite port).
 
-<===|| TailwindCSS (v4.1.x) Setup ||===>
+### 🏗️ Building for Production
 
-npm install tailwindcss @tailwindcss/vite
+To build the application for production:
 
+```bash
+npm run build
+```
 
-✔ React + Tailwind 4.x (no custom CSS)
-✔ Formik + Yup ফর্ম ভ্যালিডেশনের জন্য
-✔ Clerk Auth লগইন সিস্টেমের জন্য
-✔ Stripe পেমেন্ট
-✔ MongoDB + Express ব্যাকএন্ড
-✔ File Upload → Local/S3
-✔ Lucide Icons (no deprecated icons)
-✔ Responsive UI (Header, Footer, Filter, Search)
+## 🛠️ Tech Stack
 
-
-1. Search & Filter Bar:
-
-    Purpose: User-der-ke tader pochonder event khuje ber korar jonno ekta powerful tool deya.
-
-    Features:
-
-Search Input: Event-er naam diye search korar jonno.
-
-Category Filter: Dropdown ba button theke category (Music, Tech, etc.) select korar jonno.
-
-Location Filter: City ba area diye filter korar jonno.
-
-Date Filter: Ekta date range select kore event khujar jonno.
-
-Sort By: Price (Low to High) ba Date (Newest First) onujayi sort korar jonno.
-
-
-
-
+-   **Framework:** React (Vite)
+-   **Styling:** Tailwind CSS
+-   **State Management:** Redux Toolkit
+-   **Routing:** React Router DOM
+-   **HTTP Client:** Axios
+-   **UI Libraries:** Framer Motion, React Icons, React Toastify
