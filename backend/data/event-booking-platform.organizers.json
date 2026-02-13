@@ -1,0 +1,57 @@
+[{
+  "_id": {
+    "$oid": "69077301038a3b1e5389e68e"
+  },
+  "email": "admin@eventbooking.com",
+  "name": {
+    "firstName": "Admin",
+    "lastName": "Bajrul"
+  },
+  "password": "$2b$10$qd75NcVYO2iHnfl6qWw7OeTE2mSvqoDEVuo1ZBlpSBvfdSmod6JUO",
+  "role": "admin",
+  "createdAt": {
+    "$date": "2025-11-02T15:04:33.746Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-02T15:04:33.746Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690b4a29a77aeaa567030de9"
+  },
+  "email": "bajrul@organizer.com",
+  "name": {
+    "firstName": "Bajrul",
+    "lastName": "Middya"
+  },
+  "password": "$2b$10$Y6jnnMgEGu/9nVC5mrYQ7uT13wKOgngoMS3OqcCC9OJoodye.XiMi",
+  "role": "organizer",
+  "createdAt": {
+    "$date": "2025-11-05T12:59:21.629Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T12:59:21.629Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6910905dbe21527e66b67a8e"
+  },
+  "email": "monirul@eventbooking.com",
+  "name": {
+    "firstName": "Monirul",
+    "lastName": "Middya"
+  },
+  "password": "$2b$10$S0FayCISDATV.0K6KpfPweMGduTWfdWrzOFqu0LK5er1dkGwkr.Ve",
+  "role": "organizer",
+  "createdAt": {
+    "$date": "2025-11-09T13:00:13.257Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-09T13:00:13.257Z"
+  },
+  "__v": 0
+}]

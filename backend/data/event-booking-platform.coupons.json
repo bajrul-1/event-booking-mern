@@ -1,0 +1,221 @@
+[{
+  "_id": {
+    "$oid": "68da0efc1450447db57d937c"
+  },
+  "code": "DIWALI25",
+  "discount": 15,
+  "type": "percentage",
+  "description": "Celebrate Diwali with 15% OFF on all events. Valid for a limited time!",
+  "minPurchase": 500,
+  "validFrom": {
+    "$date": "2025-10-15T00:00:00.000Z"
+  },
+  "validTo": {
+    "$date": "2025-11-10T23:59:59.000Z"
+  },
+  "isActive": true,
+  "applicableEvents": [],
+  "applicableCategories": [],
+  "usageLimit": "unlimited"
+},
+{
+  "_id": {
+    "$oid": "68da0efc1450447db57d937f"
+  },
+  "code": "FOODIE15",
+  "discount": 15,
+  "type": "percentage",
+  "description": "15% off on all Food & Drinks category events.",
+  "minPurchase": 400,
+  "validFrom": {
+    "$date": "2025-01-01T00:00:00.000Z"
+  },
+  "validTo": {
+    "$date": "2025-12-31T23:59:59.000Z"
+  },
+  "isActive": true,
+  "applicableEvents": [],
+  "applicableCategories": [
+    {
+      "$oid": "68d2bde2532b80b83f4e88a1"
+    }
+  ],
+  "usageLimit": "unlimited"
+},
+{
+  "_id": {
+    "$oid": "68da0efc1450447db57d937b"
+  },
+  "code": "WELCOME150",
+  "discount": 150,
+  "type": "fixed",
+  "description": "Flat ₹150 off for new users on their first booking above ₹499.",
+  "minPurchase": 499,
+  "validFrom": {
+    "$date": "2025-01-01T00:00:00.000Z"
+  },
+  "validTo": {
+    "$date": "2026-12-31T23:59:59.000Z"
+  },
+  "isActive": true,
+  "userType": "newUser",
+  "usageLimit": "once_per_user",
+  "applicableEvents": [],
+  "applicableCategories": []
+},
+{
+  "_id": {
+    "$oid": "68da0efc1450447db57d9381"
+  },
+  "code": "ARIJIT500",
+  "discount": 500,
+  "type": "fixed",
+  "description": "Flat ₹500 off on Arijit Singh's concert tickets. Min. purchase of ₹2000.",
+  "minPurchase": 2000,
+  "validFrom": {
+    "$date": "2025-09-01T00:00:00.000Z"
+  },
+  "validTo": {
+    "$date": "2025-10-14T23:59:59.000Z"
+  },
+  "isActive": true,
+  "applicableEvents": [
+    {
+      "$oid": "68d2c29fe8ce09c16e657ab9"
+    }
+  ],
+  "applicableCategories": [],
+  "usageLimit": "unlimited"
+},
+{
+  "_id": {
+    "$oid": "68da0efc1450447db57d9384"
+  },
+  "code": "EXPIRED2024",
+  "discount": 50,
+  "type": "percentage",
+  "description": "This is an example of an expired coupon.",
+  "minPurchase": 0,
+  "validFrom": {
+    "$date": "2024-01-01T00:00:00.000Z"
+  },
+  "validTo": {
+    "$date": "2024-12-31T23:59:59.000Z"
+  },
+  "isActive": false,
+  "applicableEvents": [],
+  "applicableCategories": [],
+  "usageLimit": "unlimited"
+},
+{
+  "_id": {
+    "$oid": "68da0efc1450447db57d9380"
+  },
+  "code": "MONTHLYTREAT",
+  "discount": 100,
+  "type": "fixed",
+  "description": "Get flat ₹100 off once every month. Your monthly treat!",
+  "minPurchase": 750,
+  "validFrom": {
+    "$date": "2025-01-01T00:00:00.000Z"
+  },
+  "validTo": {
+    "$date": "2026-12-31T23:59:59.000Z"
+  },
+  "isActive": true,
+  "usageLimit": "once_per_month",
+  "applicableEvents": [],
+  "applicableCategories": []
+},
+{
+  "_id": {
+    "$oid": "68da0efc1450447db57d937d"
+  },
+  "code": "TECHSUMMIT20",
+  "discount": 20,
+  "type": "percentage",
+  "description": "Special 20% discount only for the Kolkata Tech Summit!",
+  "minPurchase": 1000,
+  "validFrom": {
+    "$date": "2025-09-01T00:00:00.000Z"
+  },
+  "validTo": {
+    "$date": "2025-11-19T23:59:59.000Z"
+  },
+  "isActive": true,
+  "applicableEvents": [
+    {
+      "$oid": "68cfb9312f9ecb40caca1283"
+    }
+  ],
+  "applicableCategories": [],
+  "usageLimit": "unlimited"
+},
+{
+  "_id": {
+    "$oid": "68da0efc1450447db57d937e"
+  },
+  "code": "MUSICFEST",
+  "discount": 10,
+  "type": "percentage",
+  "description": "Rock on! Get 10% off on any Music event.",
+  "minPurchase": 1000,
+  "validFrom": {
+    "$date": "2025-01-01T00:00:00.000Z"
+  },
+  "validTo": {
+    "$date": "2025-12-31T23:59:59.000Z"
+  },
+  "isActive": true,
+  "applicableEvents": [],
+  "applicableCategories": [
+    {
+      "$oid": "68d2bde2532b80b83f4e889f"
+    }
+  ],
+  "usageLimit": "unlimited"
+},
+{
+  "_id": {
+    "$oid": "68da0efc1450447db57d9382"
+  },
+  "code": "EARLYBIRD20",
+  "discount": 20,
+  "type": "percentage",
+  "description": "Book any event early this month and get 20% off!",
+  "minPurchase": 0,
+  "validFrom": {
+    "$date": "2025-09-01T00:00:00.000Z"
+  },
+  "validTo": {
+    "$date": "2025-09-30T23:59:59.000Z"
+  },
+  "isActive": true,
+  "applicableEvents": [],
+  "applicableCategories": [],
+  "usageLimit": "unlimited"
+},
+{
+  "_id": {
+    "$oid": "68da0efc1450447db57d9383"
+  },
+  "code": "SPORTYFIVE",
+  "discount": 5,
+  "type": "percentage",
+  "description": "5% additional discount on all Sports & Fitness events.",
+  "minPurchase": 0,
+  "validFrom": {
+    "$date": "2025-01-01T00:00:00.000Z"
+  },
+  "validTo": {
+    "$date": "2025-12-31T23:59:59.000Z"
+  },
+  "isActive": true,
+  "applicableEvents": [],
+  "applicableCategories": [
+    {
+      "$oid": "68d2bde2532b80b83f4e88a2"
+    }
+  ],
+  "usageLimit": "unlimited"
+}]

@@ -1,0 +1,170 @@
+[{
+  "_id": {
+    "$oid": "690f9e3d4cc61fb66a9401cc"
+  },
+  "name": "Music",
+  "slug": "music",
+  "description": "Live concerts, music festivals, and performances.",
+  "imageUrl": "https://images.pexels.com/photos/167636/pexels-photo-167636.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-11-08T19:47:09.533Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-08T19:47:09.533Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690f9e9b4cc61fb66a9401d0"
+  },
+  "name": "Business & Networking",
+  "slug": "business-networking",
+  "description": "Conferences, seminars, and networking events for professionals.",
+  "imageUrl": "https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-11-08T19:48:43.755Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-08T19:48:43.755Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690f9ec44cc61fb66a9401d4"
+  },
+  "name": "Art & Culture",
+  "slug": "art-culture",
+  "description": "Exhibitions, theatre, literature festivals, and cultural gatherings.",
+  "imageUrl": "https://images.pexels.com/photos/102127/pexels-photo-102127.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-11-08T19:49:24.358Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-08T19:49:24.358Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690f9ef44cc61fb66a9401dc"
+  },
+  "name": "Food & Drinks",
+  "slug": "food-drinks",
+  "description": "Food festivals, culinary workshops, and beverage tasting events.",
+  "imageUrl": "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-11-08T19:50:12.018Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-08T19:50:12.018Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690f9f214cc61fb66a9401e0"
+  },
+  "name": "Sports & Fitness",
+  "slug": "sports-fitness",
+  "description": "Marathons, live sports matches, and fitness workshops.",
+  "imageUrl": "https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-11-08T19:50:57.966Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-08T19:50:57.966Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690f9f524cc61fb66a9401e4"
+  },
+  "name": "Comedy",
+  "slug": "comedy",
+  "description": "Stand-up comedy shows, open mics, and improv nights.",
+  "imageUrl": "https://images.pexels.com/photos/718742/pexels-photo-718742.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-11-08T19:51:46.205Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-08T19:51:46.205Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690f9f784cc61fb66a9401e8"
+  },
+  "name": "Cinema",
+  "slug": "cinema",
+  "description": "Movie screenings, film festivals, and premieres.",
+  "imageUrl": "https://images.pexels.com/photos/7991579/pexels-photo-7991579.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-11-08T19:52:24.123Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-08T19:52:24.123Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690f9fa84cc61fb66a9401ec"
+  },
+  "name": "Health & Wellness",
+  "slug": "health-wellness",
+  "description": "Yoga retreats, meditation sessions, and wellness workshops.",
+  "imageUrl": "https://images.pexels.com/photos/3987066/pexels-photo-3987066.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-11-08T19:53:12.262Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-08T19:53:12.262Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690f9fd54cc61fb66a9401f0"
+  },
+  "name": "Tech",
+  "slug": "tech",
+  "description": "Events related to technology, startups, and innovation.",
+  "imageUrl": "https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-11-08T19:53:57.985Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-08T19:53:57.985Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690f9ff74cc61fb66a9401f4"
+  },
+  "name": "Workshops",
+  "slug": "workshops",
+  "description": "Skill-based workshops on various topics from coding to pottery.",
+  "imageUrl": "https://images.pexels.com/photos/3184328/pexels-photo-3184328.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-11-08T19:54:31.179Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-08T19:54:31.179Z"
+  },
+  "__v": 0
+}]

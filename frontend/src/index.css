@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Manrope:wght@200..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+/* Tailwind CSS Imports */
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    /* =========| 🖋️ Typography |========= */
+    --font-heading: "Poppins", "sans-serif";    /* Heading font */
+    --font-body: "Inter", "sans-serif";         /* Body font */
+    --font-alt: "Manrope", "sans-serif"; /* Alternative font */
+
+    /* ===| 🎨 Primary (Brand Colors) - Vibrant Blue/Indigo |=== */
+    --color-primary-50: #EEF2FF;
+    --color-primary-100: #E0E7FF;
+    --color-primary-200: #C7D2FE;
+    --color-primary-300: #A5B4FC;
+    --color-primary-400: #818CF8;
+    --color-primary-500: #6366F1;               /* Indigo 500 */
+    --color-primary-600: #4F46E5;               /* Indigo 600 */
+    --color-primary-700: #4338CA;
+    --color-primary-900: #312E81;
+
+    /* =====| 🎉 Secondary (Accent) - Vibrant Pink/Purple |===== */
+    --color-secondary-50: #FDF2F8;
+    --color-secondary-100: #FCE7F3;
+    --color-secondary-400: #F472B6;
+    --color-secondary-500: #EC4899;             /* Pink 500 */
+    --color-secondary-600: #DB2777;             /* Pink 600 */
+
+    /* ==| ✅ Success / Payment Status |== */
+    --color-success-100: #D1FAE5;
+    --color-success-500: #10B981;
+    --color-success-600: #047857;
+
+    /* =======| ❌ Error / Alerts |======= */
+    --color-error-100: #FEE2E2;
+    --color-error-500: #EF4444;
+    --color-error-600: #B91C1C;
+
+    /* ====| ⚪ Neutral / Background |==== */
+    --color-neutral-50: #F8FAFC;
+    --color-neutral-100: #F1F5F9;
+    --color-neutral-200: #E2E8F0;
+    --color-neutral-300: #CBD5E1;
+    --color-neutral-400: #94A3B8;
+    --color-neutral-500: #64748B;
+    --color-neutral-600: #475569;
+    --color-neutral-700: #334155;
+    --color-neutral-800: #1E293B;
+    --color-neutral-900: #0F172A;
+    --color-neutral-950: #020617;
+}
+
+/* Custom Animations */
+@keyframes blob {
+  0% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+.animate-blob {
+  animation: blob 7s infinite;
+}
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+.glass {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+

@@ -1,0 +1,48 @@
+[{
+  "_id": {
+    "$oid": "68d2bf51dce612142ffadbae"
+  },
+  "clerkId": "user_31V50bSnflcEFu2kHfZSXXjtjtD",
+  "email": "bajrulmiddya1@gmail.com",
+  "name": {
+    "firstName": "BAJRUL",
+    "lastName": "MIDDYA"
+  },
+  "imageUrl": "https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvdXBsb2FkZWQvaW1nXzMxWGw1alFyWUN3RXNaMXk2dEJXWlFIS2k3WSJ9",
+  "role": "attendee",
+  "createdAt": {
+    "$date": "2025-09-23T15:40:01.622Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-12T15:16:17.748Z"
+  },
+  "__v": 0,
+  "dob": {
+    "$date": "2001-12-07T00:00:00.000Z"
+  },
+  "phone": "6295445049"
+},
+{
+  "_id": {
+    "$oid": "69181d527efeee80be709525"
+  },
+  "clerkId": "user_35VGsxUCcCRbMwqTH7zMQjJ3z7Q",
+  "email": "bajrulmiddya99@gmail.com",
+  "name": {
+    "firstName": "Bajrul",
+    "lastName": "Middya"
+  },
+  "imageUrl": "https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18zNVZHc3ZwWnhqWENiRkZjNHlGcENjZFJpOUsifQ",
+  "role": "attendee",
+  "createdAt": {
+    "$date": "2025-11-15T06:27:30.069Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-15T06:28:01.595Z"
+  },
+  "__v": 0,
+  "dob": {
+    "$date": "2001-11-30T00:00:00.000Z"
+  },
+  "phone": "8001976137"
+}]

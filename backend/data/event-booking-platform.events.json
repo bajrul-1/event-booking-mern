@@ -1,0 +1,455 @@
+[{
+  "_id": {
+    "$oid": "690fad0dc929b9e6e3f0ebb2"
+  },
+  "title": "Arijit Singh Live in Mumbai",
+  "description": "Experience the soulful voice of Arijit Singh live.",
+  "imageUrl": "https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?q=80&w=2070&auto-format&fit=crop",
+  "date": {
+    "$date": "2026-01-01T11:50:00.000Z"
+  },
+  "location": "Jio World Garden, Mumbai",
+  "category": {
+    "$oid": "690f9e3d4cc61fb66a9401cc"
+  },
+  "organizer": {
+    "$oid": "69077301038a3b1e5389e68e"
+  },
+  "guests": [
+    {
+      "name": "Arijit Singh",
+      "title": "Singer",
+      "_id": {
+        "$oid": "690fad0dc929b9e6e3f0ebb3"
+      }
+    },
+    {
+      "name": "Pritam Chakraborty",
+      "title": "Music director",
+      "_id": {
+        "$oid": "690fad0dc929b9e6e3f0ebb4"
+      }
+    }
+  ],
+  "ticketTiers": [
+    {
+      "name": "General",
+      "price": 10000,
+      "totalQuantity": 2000,
+      "soldQuantity": 0,
+      "access": "public",
+      "_id": {
+        "$oid": "690fad0dc929b9e6e3f0ebb5"
+      }
+    },
+    {
+      "name": "VIP",
+      "price": 0,
+      "totalQuantity": 20,
+      "soldQuantity": 0,
+      "access": "admin_organizer_only",
+      "_id": {
+        "$oid": "690fad0dc929b9e6e3f0ebb6"
+      }
+    },
+    {
+      "name": "Premium",
+      "price": 20000,
+      "totalQuantity": 100,
+      "soldQuantity": 0,
+      "access": "admin_organizer_only",
+      "_id": {
+        "$oid": "690fad0dc929b9e6e3f0ebb7"
+      }
+    }
+  ],
+  "status": "published",
+  "createdAt": {
+    "$date": "2025-11-08T20:50:21.680Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-09T12:44:08.639Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69106f398004563f1822409d"
+  },
+  "title": "Delhi International Food Festival",
+  "description": "A paradise for food lovers. Taste cuisines from all over India.",
+  "imageUrl": "https://images.unsplash.com/photo-1555939594-58d7cb51d1ad1?q=80&w=1887&auto-format&fit=crop",
+  "date": {
+    "$date": "2026-02-10T14:25:00.000Z"
+  },
+  "location": "Jawaharlal Nehru Stadium, Delhi",
+  "category": {
+    "$oid": "690f9ef44cc61fb66a9401dc"
+  },
+  "organizer": {
+    "$oid": "69077301038a3b1e5389e68e"
+  },
+  "guests": [
+    {
+      "name": "Narendra Modi",
+      "title": "Minister of India",
+      "_id": {
+        "$oid": "69106f398004563f1822409e"
+      }
+    }
+  ],
+  "ticketTiers": [
+    {
+      "name": "General",
+      "price": 500,
+      "totalQuantity": 2000,
+      "soldQuantity": 0,
+      "access": "public",
+      "_id": {
+        "$oid": "69106f398004563f1822409f"
+      }
+    },
+    {
+      "name": "Premium",
+      "price": 1200,
+      "totalQuantity": 200,
+      "soldQuantity": 0,
+      "access": "public",
+      "_id": {
+        "$oid": "69106f398004563f182240a0"
+      }
+    }
+  ],
+  "status": "published",
+  "createdAt": {
+    "$date": "2025-11-09T10:38:49.350Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-09T12:44:07.480Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69108c93be21527e66b67a44"
+  },
+  "title": "Pottery Workshop",
+  "description": "Learn the basics of pottery and create your own masterpiece.",
+  "imageUrl": "https://images.unsplash.com/photo-1565253236243-5e85c2b33f3b?q=80&w=1887&auto-format&fit=crop",
+  "date": {
+    "$date": "2025-11-30T17:47:00.000Z"
+  },
+  "location": "Kolkata Centre for Creativity",
+  "category": {
+    "$oid": "690f9ff74cc61fb66a9401f4"
+  },
+  "organizer": {
+    "$oid": "69077301038a3b1e5389e68e"
+  },
+  "guests": [],
+  "ticketTiers": [
+    {
+      "name": "General",
+      "price": 499,
+      "totalQuantity": 3000,
+      "soldQuantity": 0,
+      "access": "public",
+      "_id": {
+        "$oid": "69108c93be21527e66b67a45"
+      }
+    },
+    {
+      "name": "VIP",
+      "price": 0,
+      "totalQuantity": 50,
+      "soldQuantity": 0,
+      "access": "admin_organizer_only",
+      "_id": {
+        "$oid": "69108c93be21527e66b67a46"
+      }
+    }
+  ],
+  "status": "published",
+  "createdAt": {
+    "$date": "2025-11-09T12:44:03.355Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-09T12:44:03.355Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "691091f6be21527e66b67ad3"
+  },
+  "title": "Mumbai Marathon 2026",
+  "description": "Join thousands of runners in India's biggest marathon.",
+  "imageUrl": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=2070&auto-format&fit=crop",
+  "date": {
+    "$date": "2026-04-02T04:09:00.000Z"
+  },
+  "location": "Mumbai, Maharashtra",
+  "category": {
+    "$oid": "690f9f214cc61fb66a9401e0"
+  },
+  "organizer": {
+    "$oid": "69077301038a3b1e5389e68e"
+  },
+  "guests": [
+    {
+      "name": "Sir Mo Farah",
+      "title": "runner",
+      "_id": {
+        "$oid": "691091f6be21527e66b67ad4"
+      }
+    }
+  ],
+  "ticketTiers": [
+    {
+      "name": "General",
+      "price": 699,
+      "totalQuantity": 3000,
+      "soldQuantity": 0,
+      "access": "public",
+      "_id": {
+        "$oid": "691091f6be21527e66b67ad5"
+      }
+    },
+    {
+      "name": "VIP",
+      "price": 0,
+      "totalQuantity": 20,
+      "soldQuantity": 0,
+      "access": "admin_organizer_only",
+      "_id": {
+        "$oid": "691091f6be21527e66b67ad6"
+      }
+    },
+    {
+      "name": "Premium",
+      "price": 999,
+      "totalQuantity": 1000,
+      "soldQuantity": 0,
+      "access": "public",
+      "_id": {
+        "$oid": "691091f6be21527e66b67ad7"
+      }
+    }
+  ],
+  "status": "published",
+  "createdAt": {
+    "$date": "2025-11-09T13:07:02.472Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-09T13:07:02.472Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69109372be21527e66b67afe"
+  },
+  "title": "Kolkata Tech Summit 2025",
+  "description": "A 3-day summit on AI, Web3, and future technologies.",
+  "imageUrl": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto-format&fit=crop",
+  "date": {
+    "$date": "2025-11-27T05:00:00.000Z"
+  },
+  "location": "Biswa Bangla Convention Centre, Kolkata",
+  "category": {
+    "$oid": "690f9fd54cc61fb66a9401f0"
+  },
+  "organizer": {
+    "$oid": "69077301038a3b1e5389e68e"
+  },
+  "guests": [
+    {
+      "name": "Priya Sharma",
+      "title": "CEO, FutureAI",
+      "_id": {
+        "$oid": "69109372be21527e66b67aff"
+      }
+    },
+    {
+      "name": "Charles Simon",
+      "title": "CEO, FutureAI",
+      "_id": {
+        "$oid": "69109372be21527e66b67b00"
+      }
+    }
+  ],
+  "ticketTiers": [
+    {
+      "name": "General",
+      "price": 499,
+      "totalQuantity": 1000,
+      "soldQuantity": 0,
+      "access": "public",
+      "_id": {
+        "$oid": "69109372be21527e66b67b01"
+      }
+    },
+    {
+      "name": "VIP",
+      "price": 0,
+      "totalQuantity": 10,
+      "soldQuantity": 0,
+      "access": "admin_organizer_only",
+      "_id": {
+        "$oid": "69109372be21527e66b67b02"
+      }
+    },
+    {
+      "name": "Premium",
+      "price": 899,
+      "totalQuantity": 300,
+      "soldQuantity": 0,
+      "access": "public",
+      "_id": {
+        "$oid": "69109372be21527e66b67b03"
+      }
+    }
+  ],
+  "status": "published",
+  "createdAt": {
+    "$date": "2025-11-09T13:13:22.942Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-09T13:13:22.942Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6910949dbe21527e66b67b34"
+  },
+  "title": "Jaipur Literature Festival",
+  "description": "The 'greatest literary show on Earth' is back.",
+  "imageUrl": "https://images.pexels.com/photos/1036804/pexels-photo-1036804.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+  "date": {
+    "$date": "2025-11-21T05:20:00.000Z"
+  },
+  "location": "Diggi Palace, Jaipur",
+  "category": {
+    "$oid": "690f9ec44cc61fb66a9401d4"
+  },
+  "organizer": {
+    "$oid": "69077301038a3b1e5389e68e"
+  },
+  "guests": [
+    {
+      "name": "Bhajan Lal Sharma",
+      "title": "Chief Minister of Rajasthan",
+      "_id": {
+        "$oid": "6910949dbe21527e66b67b35"
+      }
+    }
+  ],
+  "ticketTiers": [
+    {
+      "name": "General",
+      "price": 399,
+      "totalQuantity": 3000,
+      "soldQuantity": 0,
+      "access": "public",
+      "_id": {
+        "$oid": "6910949dbe21527e66b67b36"
+      }
+    },
+    {
+      "name": "VIP",
+      "price": 0,
+      "totalQuantity": 30,
+      "soldQuantity": 0,
+      "access": "admin_organizer_only",
+      "_id": {
+        "$oid": "6910949dbe21527e66b67b37"
+      }
+    },
+    {
+      "name": "Premium",
+      "price": 799,
+      "totalQuantity": 250,
+      "soldQuantity": 0,
+      "access": "public",
+      "_id": {
+        "$oid": "6910949dbe21527e66b67b38"
+      }
+    }
+  ],
+  "status": "published",
+  "createdAt": {
+    "$date": "2025-11-09T13:18:21.115Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-09T13:18:21.115Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6910a971be21527e66b67ba7"
+  },
+  "title": "Anubhav Singh Bassi - Live",
+  "description": "Get ready for a laughter riot with Anubhav Singh Bassi's new stand-up special.",
+  "imageUrl": "https://images.unsplash.com/photo-1593697972628-6435a230a10a?q=80&w=2070&auto-format&fit=crop",
+  "date": {
+    "$date": "2026-01-01T04:50:00.000Z"
+  },
+  "location": "Tata Theatre, NCPA, Mumbai",
+  "category": {
+    "$oid": "690f9f524cc61fb66a9401e4"
+  },
+  "organizer": {
+    "$oid": "69077301038a3b1e5389e68e"
+  },
+  "guests": [
+    {
+      "name": "Anubhav Singh Bassi",
+      "title": "Comedian",
+      "_id": {
+        "$oid": "6910a971be21527e66b67ba8"
+      }
+    }
+  ],
+  "ticketTiers": [
+    {
+      "name": "General",
+      "price": 599,
+      "totalQuantity": 2000,
+      "soldQuantity": 0,
+      "access": "public",
+      "_id": {
+        "$oid": "6910a971be21527e66b67ba9"
+      }
+    },
+    {
+      "name": "VIP",
+      "price": 0,
+      "totalQuantity": 30,
+      "soldQuantity": 0,
+      "access": "admin_organizer_only",
+      "_id": {
+        "$oid": "6910a971be21527e66b67baa"
+      }
+    },
+    {
+      "name": "Premium",
+      "price": 1199,
+      "totalQuantity": 1000,
+      "soldQuantity": 0,
+      "access": "public",
+      "_id": {
+        "$oid": "6910a971be21527e66b67bab"
+      }
+    }
+  ],
+  "status": "published",
+  "createdAt": {
+    "$date": "2025-11-09T14:47:13.654Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-09T15:00:42.064Z"
+  },
+  "__v": 0
+}]
