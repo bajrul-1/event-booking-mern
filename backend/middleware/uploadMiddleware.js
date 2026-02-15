@@ -1,22 +1,20 @@
 import multer from 'multer';
-import path from 'path';
-import fs from 'fs';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import cloudinary from '../config/cloudinary.js';
 
 // Function to create multer upload middleware for specific folders
 const createUpload = (folderName) => {
-    // Define storage for uploaded files
-    const storage = multer.diskStorage({
-        destination: (req, file, cb) => {
-            const uploadPath = `uploads/${folderName}/`;
-            // Ensure directory exists
-            fs.mkdirSync(uploadPath, { recursive: true });
-            cb(null, uploadPath);
+    // Define storage for uploaded files using Cloudinary
+    const storage = new CloudinaryStorage({
+        cloudinary: cloudinary,
+        params: {
+            folder: `event-booking/${folderName}`,
+            allowed_formats: ['jpg', 'png', 'jpeg', 'webp'],
+            public_id: (req, file) => {
+                const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+                return file.fieldname + '-' + uniqueSuffix;
+            }
         },
-        filename: (req, file, cb) => {
-            // Generate a unique filename: fieldname-timestamp.extension
-            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-            cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
-        }
     });
 
     // File filter to allow only images

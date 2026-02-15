@@ -2,6 +2,7 @@ import Organizer from '../models/Organizer.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import fs from 'fs';
+import { deleteImage } from '../utils/cloudinaryUtils.js';
 
 // --- NOTUN FUNCTION ---
 export const getAllOrganizers = async (req, res) => {
@@ -61,8 +62,8 @@ export const createOrganizer = async (req, res) => {
             gender,
             dob,
             role: 'organizer',
-            profileImage: req.files?.profileImage ? `uploads/organizers/${req.files.profileImage[0].filename}` : '',
-            coverImage: req.files?.coverImage ? `uploads/organizers/${req.files.coverImage[0].filename}` : ''
+            profileImage: req.files?.profileImage ? req.files.profileImage[0].path : '',
+            coverImage: req.files?.coverImage ? req.files.coverImage[0].path : ''
         });
         const savedOrganizer = await newOrganizer.save();
         res.status(201).json({
@@ -78,9 +79,20 @@ export const createOrganizer = async (req, res) => {
 export const deleteOrganizer = async (req, res) => {
     try {
         const { id } = req.params;
+        const organizer = await Organizer.findById(id);
+
+        if (!organizer) {
+            return res.status(404).json({ success: false, message: 'Organizer not found' });
+        }
+
+        // Delete images from Cloudinary
+        if (organizer.profileImage) await deleteImage(organizer.profileImage);
+        if (organizer.coverImage) await deleteImage(organizer.coverImage);
+
         await Organizer.findByIdAndDelete(id);
         res.status(200).json({ success: true, message: 'Organizer deleted successfully.' });
     } catch (error) {
+        console.error("Error deleting organizer:", error);
         res.status(500).json({ success: false, message: 'Server error while deleting organizer.' });
     }
 };
@@ -131,23 +143,19 @@ export const updateOrganizer = async (req, res) => {
         if (dob) organizer.dob = dob;
 
         if (req.files?.profileImage) {
+            // Delete old profile image
             if (organizer.profileImage) {
-                // Delete old profile image
-                fs.unlink(organizer.profileImage, (err) => {
-                    if (err) console.error("Failed to delete old profile image:", err);
-                });
+                await deleteImage(organizer.profileImage);
             }
-            organizer.profileImage = `uploads/organizers/${req.files.profileImage[0].filename}`;
+            organizer.profileImage = req.files.profileImage[0].path;
         }
 
         if (req.files?.coverImage) {
+            // Delete old cover image
             if (organizer.coverImage) {
-                // Delete old cover image
-                fs.unlink(organizer.coverImage, (err) => {
-                    if (err) console.error("Failed to delete old cover image:", err);
-                });
+                await deleteImage(organizer.coverImage);
             }
-            organizer.coverImage = `uploads/organizers/${req.files.coverImage[0].filename}`;
+            organizer.coverImage = req.files.coverImage[0].path;
         }
 
         const updatedOrganizer = await organizer.save();

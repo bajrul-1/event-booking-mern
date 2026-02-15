@@ -3,6 +3,7 @@ import User from '../models/User.js';
 import Category from '../models/Category.model.js';
 import Organizer from '../models/Organizer.js';
 import fs from 'fs';
+import { deleteImage } from '../utils/cloudinaryUtils.js';
 
 
 
@@ -10,24 +11,21 @@ import fs from 'fs';
 
 export const createEvent = async (req, res) => {
     try {
+        console.log('Create Event Body:', req.body);
+        console.log('Create Event File:', req.file);
+
         const organizerId = req.organizer._id;
         let eventData = req.body;
 
-        // Validating JSON data from FormData (if it comes as stringified JSON or individual fields)
-        // Usually with FormData, text fields come as strings. If ticketTiers/guests are arrays, they might need parsing if sent as JSON string.
-        // Assuming frontend sends them as individual fields or handled by middleware/body-parser if just form-url-encoded, but with multer formData, 
-        // complex arrays might be sent as 'ticketTiers[0][name]' etc. OR as a JSON string field.
-        // Let's assume frontend sends stringified JSON for complex arrays if simple appending checks out, OR we handle the object reconstruction.
-        // However, looking at the code, we might need to parse 'ticketTiers' and 'guests' if they are strings.
-
+        // Validating JSON data from FormData
         if (typeof eventData.ticketTiers === 'string') {
-            try { eventData.ticketTiers = JSON.parse(eventData.ticketTiers); } catch (e) { }
+            try { eventData.ticketTiers = JSON.parse(eventData.ticketTiers); } catch (e) { console.error('Error parsing ticketTiers:', e); }
         }
         if (typeof eventData.guests === 'string') {
-            try { eventData.guests = JSON.parse(eventData.guests); } catch (e) { }
+            try { eventData.guests = JSON.parse(eventData.guests); } catch (e) { console.error('Error parsing guests:', e); }
         }
 
-        const imageUrl = req.file ? `uploads/events/${req.file.filename}` : eventData.imageUrl;
+        const imageUrl = req.file ? req.file.path : eventData.imageUrl;
 
         const newEvent = new Event({
             ...eventData,
@@ -43,7 +41,9 @@ export const createEvent = async (req, res) => {
         });
     } catch (error) {
         console.error("Error creating event:", error);
-        res.status(500).json({ success: false, message: 'Server error while creating event.' });
+        // Print the full error object if possible
+        if (error.errors) console.error("Validation Errors:", JSON.stringify(error.errors, null, 2));
+        res.status(500).json({ success: false, message: 'Server error while creating event.', error: error.message });
     }
 };
 
@@ -66,13 +66,11 @@ export const updateEvent = async (req, res) => {
         }
 
         if (req.file) {
-            // Delete old image
-            if (event.imageUrl && event.imageUrl.startsWith('uploads/')) {
-                fs.unlink(event.imageUrl, (err) => {
-                    if (err) console.error("Failed to delete old event image:", err);
-                });
+            // Delete old image from Cloudinary
+            if (event.imageUrl) {
+                await deleteImage(event.imageUrl);
             }
-            updateData.imageUrl = `uploads/events/${req.file.filename}`;
+            updateData.imageUrl = req.file.path;
         }
 
         const updatedEvent = await Event.findByIdAndUpdate(id, updateData, { new: true });
@@ -100,11 +98,13 @@ export const deleteEvent = async (req, res) => {
         }
 
         // Delete image
-        if (event.imageUrl && event.imageUrl.startsWith('uploads/')) {
-            fs.unlink(event.imageUrl, (err) => {
-                if (err) console.error("Failed to delete event image:", err);
-            });
-        }
+        await deleteImage(event.imageUrl);
+        // Delete image logic removed for Cloudinary migration (or update to delete from Cloudinary)
+        // if (event.imageUrl && event.imageUrl.startsWith('uploads/')) {
+        //     fs.unlink(event.imageUrl, (err) => {
+        //         if (err) console.error("Failed to delete event image:", err);
+        //     });
+        // }
 
         res.status(200).json({ success: true, message: 'Event deleted successfully.' });
     } catch (error) {
