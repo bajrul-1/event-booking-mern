@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Calendar, Users, Settings, LogOut, Ticket, Layers } from 'lucide-react'; // Layers icon add kora holo
+import { LayoutDashboard, Calendar, Users, Settings, LogOut, Ticket, Layers, Mail } from 'lucide-react'; // Layers, Mail icon add kora holo
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutOrganizer } from '../../redux/features/organizer/organizerAuthSlice.js';
 import { motion } from 'framer-motion';
@@ -107,6 +107,14 @@ function AdminSidebar({ isSidebarOpen }) {
                                 <Layers className={iconClass} />
                                 <motion.span variants={linkTextVariants} animate={isSidebarOpen ? "open" : "closed"} className={`ml-3 ${textClass}`}>Manage Categories</motion.span>
                             </NavLink>
+
+                            <NavLink
+                                to="/organizer/dashboard/messages"
+                                className={({ isActive }) => getLinkClasses(isActive)}
+                            >
+                                <Mail className={iconClass} />
+                                <motion.span variants={linkTextVariants} animate={isSidebarOpen ? "open" : "closed"} className={`ml-3 ${textClass}`}>Messages</motion.span>
+                            </NavLink>
                         </>
                     )}
                 </nav>
@@ -114,6 +122,7 @@ function AdminSidebar({ isSidebarOpen }) {
 
             <div className={`mt-auto border-t border-neutral-700 p-4 ${!isSidebarOpen && 'p-2'}`}>
                 <nav className="grid items-start gap-2 text-sm font-medium">
+
                     <NavLink
                         to="/organizer/dashboard/settings"
                         className={({ isActive }) => getLinkClasses(isActive)}

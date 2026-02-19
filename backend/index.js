@@ -25,9 +25,9 @@ app.use(express.json());
 
 //=================================|| CORS CONFIGURATION ||=================================>>>
 const corsPolicy = {
-  origin: process.env.CLIENT_URL,
+  origin: [process.env.CLIENT_URL, 'http://localhost:5173', 'http://localhost:3000'],
   methods: 'GET,POST,DELETE,PUT,PATCH,HEAD',
-  credential: true
+  credentials: true // 'credential' -> 'credentials' (plural is correct for axios/cors)
 }
 app.use(cors(corsPolicy));
 app.use('/uploads', express.static('uploads'));

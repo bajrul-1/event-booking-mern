@@ -57,3 +57,65 @@ export const completeProfile = async (req, res) => {
         res.status(500).json({ message: 'Server error while completing profile.' });
     }
 };
+
+// --- New Function for Public Stats ---
+import Event from './../models/Event.js';
+import Order from './../models/Order.js';
+import Category from './../models/Category.model.js';
+
+export const getPublicStats = async (req, res) => {
+    try {
+        const totalUsers = await User.countDocuments();
+        const totalEvents = await Event.countDocuments();
+
+        let trendingCategory = "Music"; // Default
+
+        // 1. Calculate Trending based on Orders (Real Data)
+        const aggregated = await Order.aggregate([
+            { $unwind: "$tickets" },
+            { $group: { _id: "$eventId", totalSold: { $sum: "$tickets.quantity" } } },
+            { $sort: { totalSold: -1 } },
+            { $limit: 5 } // Top 5 events
+        ]);
+
+        if (aggregated.length > 0) {
+            // Find category of the top selling event
+            // Note: This is a simplified approach; ideally we'd aggregate by category directly
+            const topEvent = await Event.findById(aggregated[0]._id).populate('category');
+            if (topEvent && topEvent.category) {
+                trendingCategory = topEvent.category.name;
+            }
+        }
+
+        // 2. Fallback / Tie-breaker: Rotate Daily if no real data or to keep it fresh
+        // If we want "Real Data OR Daily Rotation", we check if we found a strong trend. 
+        // For now, if no orders, we use Daily Rotation.
+        if (aggregated.length === 0) {
+            const categories = await Category.find({ status: 'active' });
+            if (categories.length > 0) {
+                // Day of Year calculation
+                const now = new Date();
+                const start = new Date(now.getFullYear(), 0, 0);
+                const diff = now - start;
+                const oneDay = 1000 * 60 * 60 * 24;
+                const day = Math.floor(diff / oneDay);
+
+                // Pick index based on day
+                const index = day % categories.length;
+                trendingCategory = categories[index].name;
+            }
+        }
+
+        res.status(200).json({
+            success: true,
+            stats: {
+                totalUsers,
+                totalEvents,
+                trendingCategory
+            }
+        });
+    } catch (error) {
+        console.error("Error fetching public stats:", error);
+        res.status(500).json({ success: false, message: "Failed to fetch stats" });
+    }
+};

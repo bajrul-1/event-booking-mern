@@ -31,6 +31,8 @@ import ManageEventsPage from './pages/admin/ManageEventsPage';
 import AdminRoute from './router/AdminRoute';
 import CreateEventPage from './pages/Organizer/CreateEventPage';
 import ManageCategoryPage from './pages/admin/ManageCategoryPage';
+import AdminMessages from './pages/admin/AdminMessages';
+import AdminMessageDetails from './pages/admin/AdminMessageDetails'; // Import add kora holo
 import BookingStatus from './pages/user/checkout/BookingStatus';
 
 function App() {
@@ -84,6 +86,8 @@ function App() {
                 <Route path="organizers" element={<ManageOrganizersPage />} />
                 <Route path="organizers/:id" element={<OrganizerProfile />} />
                 <Route path="categories" element={<ManageCategoryPage />} />
+                <Route path="messages" element={<AdminMessages />} />
+                <Route path="messages/:id" element={<AdminMessageDetails />} /> {/* Notun Route for Message Details */}
               </Route>
             </Route>
           </Route>

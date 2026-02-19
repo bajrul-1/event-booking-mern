@@ -1,11 +1,29 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Search, ArrowRight, Sparkles, Calendar, MapPin, Users } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 function HomeHeroSection() {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState("");
+    const [stats, setStats] = useState({ totalUsers: 0, totalEvents: 0 });
+
+    useEffect(() => {
+        const fetchStats = async () => {
+            try {
+                // Using relative path assuming proxy is set up or full URL from env
+                const response = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/users/stats`);
+                if (response.data.success) {
+                    setStats(response.data.stats);
+                }
+            } catch (error) {
+                console.error("Failed to fetch stats:", error);
+                // Fallback to 0 or leave as initial state
+            }
+        };
+        fetchStats();
+    }, []);
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -89,6 +107,22 @@ function HomeHeroSection() {
                         </form>
                     </motion.div>
 
+                    {/* Organizer CTA Button */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.4 }}
+                        className="flex flex-col sm:flex-row gap-4 items-center justify-center lg:justify-start mt-8"
+                    >
+                        <span className="text-neutral-400 text-sm">Want to list your event?</span>
+                        <button
+                            onClick={() => navigate('/organizer')}
+                            className="px-6 py-2.5 rounded-full border border-primary-500/30 bg-primary-500/10 hover:bg-primary-500 hover:text-white text-primary-400 text-sm font-semibold transition-all duration-300 shadow-lg shadow-primary-500/10 hover:shadow-primary-500/30"
+                        >
+                            Become an Organizer
+                        </button>
+                    </motion.div>
+
                     {/* Mini Stats */}
                     <motion.div
                         initial={{ opacity: 0 }}
@@ -98,11 +132,11 @@ function HomeHeroSection() {
                     >
                         <div className="flex items-center gap-2">
                             <div className="p-2 bg-neutral-800/50 rounded-lg text-primary-400"><Calendar size={20} /></div>
-                            <div className="text-left"><p className="font-bold text-white text-lg">2K+</p><p className="text-xs text-neutral-500 uppercase">Events</p></div>
+                            <div className="text-left"><p className="font-bold text-white text-lg">{stats.totalEvents}+</p><p className="text-xs text-neutral-500 uppercase">Events</p></div>
                         </div>
                         <div className="flex items-center gap-2">
                             <div className="p-2 bg-neutral-800/50 rounded-lg text-secondary-400"><Users size={20} /></div>
-                            <div className="text-left"><p className="font-bold text-white text-lg">50K+</p><p className="text-xs text-neutral-500 uppercase">Users</p></div>
+                            <div className="text-left"><p className="font-bold text-white text-lg">{stats.totalUsers}+</p><p className="text-xs text-neutral-500 uppercase">Users</p></div>
                         </div>
                     </motion.div>
                 </div>
@@ -141,7 +175,7 @@ function HomeHeroSection() {
                                 </div>
                                 <div>
                                     <p className="text-white font-bold text-sm">Trending</p>
-                                    <p className="text-xs text-neutral-400">Music Festivals</p>
+                                    <p className="text-xs text-neutral-400">{stats.trendingCategory || "Music Festivals"}</p>
                                 </div>
                             </div>
                         </motion.div>
@@ -159,7 +193,7 @@ function HomeHeroSection() {
                                     ))}
                                 </div>
                                 <div>
-                                    <p className="text-white font-bold text-sm">+124</p>
+                                    <p className="text-white font-bold text-sm">+{stats.totalUsers > 0 ? stats.totalUsers : 124}</p>
                                     <p className="text-xs text-neutral-400">Joining</p>
                                 </div>
                             </div>
