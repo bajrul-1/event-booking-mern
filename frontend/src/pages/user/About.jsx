@@ -8,12 +8,13 @@ function About() {
         role: "Full Stack Developer",
         bio: "Passionate about building scalable web applications with the MERN stack. I love solving complex problems and creating user-friendly experiences.",
         // Placeholder: Replace with your actual photo or keep this generic avatar
-        imageUrl: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=2080&auto=format&fit=crop",
+        imageUrl: "https://res.cloudinary.com/doyqkbqki/image/upload/WhatsApp_Image_2026-02-17_at_9.23.51_PM_sbe3pz.jpg",
         socials: {
-            linkedin: "#",
-            github: "#",
-            email: "mailto:contact@example.com"
+            linkedin: "https://www.linkedin.com/in/bajrul-middya-967491354/",
+            github: "https://github.com/bajrul-1",
+            email: "work.bajrul@gmail.com"
         }
+
     };
 
     const techStack = [
@@ -67,7 +68,7 @@ function About() {
                         <div className="absolute -inset-1 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
                         <img
                             // Replaced broken image with a working generic 'Holi Festival' or 'Celebration' image
-                            src="https://images.unsplash.com/photo-1582260219661-ebdb6787361a?q=80&w=2070&auto=format&fit=crop"
+                            src="https://media.istockphoto.com/id/1381030718/photo/barsana-holi-one-of-the-most-joyful-festival-of-india-this-is-birth-place-of-radha-lord.jpg?s=612x612&w=0&k=20&c=c0kcjHpSFJXg7F4D6s8Ez-7RWY3MjoIrwsiRQKScank="
                             alt="Indian Festival Crowd"
                             className="relative rounded-2xl shadow-2xl border border-neutral-200 dark:border-white/10 w-full object-cover h-[400px]"
                         />
@@ -148,7 +149,12 @@ function About() {
                             <div className="flex gap-4 pt-4">
                                 <a href={creator.socials.linkedin} className="p-3 bg-neutral-100 dark:bg-white/5 rounded-full hover:bg-primary-600 hover:text-white transition-colors text-neutral-700 dark:text-white"><Linkedin size={20} /></a>
                                 <a href={creator.socials.github} className="p-3 bg-neutral-100 dark:bg-white/5 rounded-full hover:bg-neutral-800 hover:text-white dark:hover:bg-neutral-200 dark:hover:text-black transition-colors text-neutral-700 dark:text-white"><Github size={20} /></a>
-                                <a href={creator.socials.email} className="p-3 bg-neutral-100 dark:bg-white/5 rounded-full hover:bg-red-500 hover:text-white transition-colors text-neutral-700 dark:text-white"><Mail size={20} /></a>
+                                <button
+                                    onClick={() => window.location.href = 'mailto:work.bajrul@gmail.com'}
+                                    className="p-3 bg-neutral-100 dark:bg-white/5 rounded-full hover:bg-red-500 hover:text-white transition-colors text-neutral-700 dark:text-white"
+                                >
+                                    <Mail size={20} />
+                                </button>
                             </div>
                         </div>
                     </div>
