@@ -41,6 +41,11 @@ CLERK_SECRET_KEY=your_clerk_secret_key
 # --- JWT ---
 JWT_SECRET=your_jwt_secret_key
 JWT_EXPIRES_IN=7d
+
+# --- Cloudinary (Images) ---
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
 ```
 
 ### 🗄️ Database Seeding (Admin User)
@@ -70,4 +75,4 @@ The server will run on `http://localhost:5000` (or your defined PORT).
 -   **Database:** MongoDB & Mongoose
 -   **Authentication:** Clerk & JWT
 -   **Payments:** Razorpay & Stripe
--   **File Uploads:** Multer
+-   **File Uploads:** Multer & Cloudinary

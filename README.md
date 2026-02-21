@@ -17,6 +17,11 @@ Navigate to the `backend` folder and follow the instructions in [backend/README.
 cd backend
 npm install
 # Setup .env
+# Required for Image Uploads:
+# CLOUDINARY_CLOUD_NAME=your_cloud_name
+# CLOUDINARY_API_KEY=your_api_key
+# CLOUDINARY_API_SECRET=your_api_secret
+
 npm run seed # (Optional: to create admin user)
 npm start
 ```

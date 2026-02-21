@@ -59,6 +59,8 @@ export const createOrder = async (req, res) => {
     }
 };
 
+import Event from '../models/Event.js'; // Needed to update ticket quantities
+
 // --- THE FIX IS HERE ---
 export const verifyPayment = async (req, res) => {
     try {
@@ -68,6 +70,16 @@ export const verifyPayment = async (req, res) => {
         const expectedSignature = crypto.createHmac('sha256', process.env.RAZORPAY_KEY_SECRET).update(body.toString()).digest('hex');
 
         if (expectedSignature === razorpay_signature) {
+            // Check if order is already successful to prevent double increment
+            const existingOrder = await Order.findById(databaseOrderId);
+            if (existingOrder.status === 'successful') {
+                return res.status(200).json({
+                    success: true,
+                    message: "Payment already verified successfully.",
+                    orderId: existingOrder._id
+                });
+            }
+
             // Payment Successful hole Payment ID update kora hocche
             const updatedOrder = await Order.findByIdAndUpdate(databaseOrderId, {
                 status: 'successful',
@@ -76,6 +88,16 @@ export const verifyPayment = async (req, res) => {
                     'razorpay.signature': razorpay_signature
                 }
             }, { new: true });
+
+            // Automatically update ticket sold quantities
+            if (updatedOrder && updatedOrder.eventId) {
+                for (const ticket of updatedOrder.tickets) {
+                    await Event.updateOne(
+                        { _id: updatedOrder.eventId, "ticketTiers.name": ticket.tierName },
+                        { $inc: { "ticketTiers.$.soldQuantity": ticket.quantity } }
+                    );
+                }
+            }
 
             res.status(200).json({
                 success: true,
@@ -106,6 +128,11 @@ export const handleWebhook = async (req, res) => {
     const secret = process.env.RAZORPAY_WEBHOOK_SECRET;
     const signature = req.headers['x-razorpay-signature'];
 
+    if (!secret || !signature) {
+        console.error("Webhook processing failed: Missing secret or signature");
+        return res.status(400).send('Missing secret or signature');
+    }
+
     try {
         const shasum = crypto.createHmac('sha256', secret);
         shasum.update(JSON.stringify(req.body));
@@ -113,24 +140,52 @@ export const handleWebhook = async (req, res) => {
 
         if (digest === signature) {
             const event = req.body;
-            if (event.event === 'order.paid') {
-                const orderId = event.payload.order.entity.id;
-                const paymentId = event.payload.payment.entity.id; // Webhook theke payment ID
 
-                await Order.findOneAndUpdate(
-                    { 'razorpay.orderId': orderId },
-                    {
-                        status: 'successful',
-                        'razorpay.paymentId': paymentId
+            // Handle successful payment
+            if (event.event === 'order.paid' || event.event === 'payment.captured') {
+                const orderId = event.payload.payment.entity.order_id;
+                const paymentId = event.payload.payment.entity.id;
+
+                const order = await Order.findOne({ 'razorpay.orderId': orderId });
+
+                if (order && order.status !== 'successful') {
+                    // Update Order Status
+                    order.status = 'successful';
+                    order.razorpay.paymentId = paymentId;
+                    await order.save();
+
+                    // Update Event Ticket Quantities
+                    if (order.eventId) {
+                        for (const ticket of order.tickets) {
+                            await Event.updateOne(
+                                { _id: order.eventId, "ticketTiers.name": ticket.tierName },
+                                { $inc: { "ticketTiers.$.soldQuantity": ticket.quantity } }
+                            );
+                        }
                     }
-                );
+                    console.log(`Webhook: Order ${orderId} marked as successful.`);
+                }
             }
+            
+            // Handle failed payment
+            else if (event.event === 'payment.failed') {
+                const orderId = event.payload.payment.entity.order_id;
+                const order = await Order.findOne({ 'razorpay.orderId': orderId });
+
+                if (order && order.status !== 'failed' && order.status !== 'successful') {
+                     order.status = 'failed';
+                     await order.save();
+                     console.log(`Webhook: Order ${orderId} marked as failed.`);
+                }
+            }
+
         } else {
+            console.error("Webhook signature mismatch.");
             return res.status(400).send('Invalid Signature');
         }
         res.json({ status: 'ok' });
     } catch (error) {
-        console.error('Webhook error:', error);
+        console.error('Webhook processing error:', error);
         res.status(500).send('Webhook processing failed');
     }
 };
