@@ -1,10 +1,59 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
+import { io } from 'socket.io-client';
+import { useDispatch } from 'react-redux';
+import { addNotification } from '../../redux/features/notifications/notificationsSlice.js';
 import AdminSidebar from './AdminSidebar.jsx';
 import AdminHeader from './AdminHeader.jsx';
 
 function AdminDashboardLayout() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        // Request Notification permission on mount
+        if ('Notification' in window && Notification.permission === 'default') {
+            Notification.requestPermission();
+        }
+
+        // Initialize Socket connection
+        const socket = io(import.meta.env.VITE_API_URL);
+
+        // Listen for new messages
+        socket.on('new_message', (messageData) => {
+
+            // Dispatch to Redux store
+            dispatch(addNotification({
+                ...messageData,
+                type: 'contact_message',
+                link: '/organizer/dashboard/messages' // Fixed route targeting the actual mounted path
+            }));
+
+            // Show Browser Notification if permitted
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification('New Contact Message', {
+                    body: `${messageData.name} said: ${messageData.message.substring(0, 50)}...`,
+                    icon: '/favicon.ico' // Or any app icon you have
+                });
+            } else if ('Notification' in window && Notification.permission !== 'denied') {
+                // Try requesting permission again just in case
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        new Notification('New Contact Message', {
+                            body: `${messageData.name} said: ${messageData.message.substring(0, 50)}...`,
+                            icon: '/favicon.ico'
+                        });
+                    }
+                });
+            }
+        });
+
+        // Cleanup on unmount
+        return () => {
+            socket.off('new_message');
+            socket.disconnect();
+        };
+    }, []);
 
     return (
         // --- THE FIX IS HERE ---

@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { useUser, useAuth } from '@clerk/clerk-react';
-import { Download, Calendar, MapPin, User, QrCode, ArrowLeft, Ticket, LoaderCircle, AlertCircle, XCircle, Clock } from 'lucide-react';
+import { Download, Calendar, MapPin, User, QrCode, ArrowLeft, Ticket, LoaderCircle, AlertCircle, XCircle, Clock, CalendarX } from 'lucide-react';
 import { QRCodeCanvas } from 'qrcode.react';
 import jsPDF from 'jspdf';
 import { toPng } from 'html-to-image'; // --- NEW IMPORT ---

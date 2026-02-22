@@ -179,10 +179,12 @@ function ManageOrganizersPage() {
 
     const handleToggleStatus = (id, currentStatus) => {
         const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
-        dispatch(updateOrganizerStatus({ id, status: newStatus }))
-            .unwrap()
-            .then(() => toast.success(`Organizer marked as ${newStatus}`))
-            .catch((err) => toast.error(err));
+        if (window.confirm(`Are you sure you want to change the organizer's status to ${newStatus}?`)) {
+            dispatch(updateOrganizerStatus({ id, status: newStatus }))
+                .unwrap()
+                .then(() => toast.success(`Organizer marked as ${newStatus}`))
+                .catch((err) => toast.error(err));
+        }
     };
 
     const filteredOrganizers = organizers.filter(org =>
@@ -253,7 +255,7 @@ function ManageOrganizersPage() {
                                             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 font-bold text-lg overflow-hidden shrink-0">
                                                 {org.profileImage ? (
                                                     <img
-                                                        src={`${import.meta.env.VITE_API_URL}${org.profileImage.startsWith('/') ? '' : '/'}${org.profileImage}`}
+                                                        src={org.profileImage}
                                                         alt={org.name?.firstName}
                                                         className="w-full h-full object-cover"
                                                     />
@@ -384,7 +386,7 @@ function ManageOrganizersPage() {
                                                             {profileImagePreview ? (
                                                                 <img src={profileImagePreview} alt="Profile Preview" className="w-full h-full object-cover" />
                                                             ) : selectedOrganizer?.profileImage ? (
-                                                                <img src={`${import.meta.env.VITE_API_URL}${selectedOrganizer.profileImage.startsWith('/') ? '' : '/'}${selectedOrganizer.profileImage}`} alt="Current Profile" className="w-full h-full object-cover" />
+                                                                <img src={selectedOrganizer.profileImage} alt="Current Profile" className="w-full h-full object-cover" />
                                                             ) : (
                                                                 <div className="flex items-center justify-center w-full h-full text-neutral-400">
                                                                     <UserPlus size={24} />
@@ -427,7 +429,7 @@ function ManageOrganizersPage() {
                                                         {coverImagePreview ? (
                                                             <img src={coverImagePreview} alt="Cover Preview" className="w-full h-full object-cover" />
                                                         ) : selectedOrganizer?.coverImage ? (
-                                                            <img src={`${import.meta.env.VITE_API_URL}${selectedOrganizer.coverImage.startsWith('/') ? '' : '/'}${selectedOrganizer.coverImage}`} alt="Current Cover" className="w-full h-full object-cover" />
+                                                            <img src={selectedOrganizer.coverImage} alt="Current Cover" className="w-full h-full object-cover" />
                                                         ) : (
                                                             <div className="flex items-center justify-center w-full h-full text-neutral-400">
                                                                 <Image size={32} />

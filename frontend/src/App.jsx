@@ -34,6 +34,8 @@ import ManageCategoryPage from './pages/admin/ManageCategoryPage';
 import AdminMessages from './pages/admin/AdminMessages';
 import AdminMessageDetails from './pages/admin/AdminMessageDetails'; // Import add kora holo
 import BookingStatus from './pages/user/checkout/BookingStatus';
+import RevenueDetailsPage from './pages/admin/RevenueDetailsPage';
+import UserDetailsPage from './pages/admin/UserDetailsPage';
 
 function App() {
   const location = useLocation(); // useLocation hook-ta use kora hocche
@@ -88,6 +90,8 @@ function App() {
                 <Route path="categories" element={<ManageCategoryPage />} />
                 <Route path="messages" element={<AdminMessages />} />
                 <Route path="messages/:id" element={<AdminMessageDetails />} /> {/* Notun Route for Message Details */}
+                <Route path="revenue" element={<RevenueDetailsPage />} />
+                <Route path="users" element={<UserDetailsPage />} />
               </Route>
             </Route>
           </Route>

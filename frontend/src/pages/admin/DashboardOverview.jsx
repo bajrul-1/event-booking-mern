@@ -5,15 +5,28 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
 
-const StatCard = ({ title, value, icon, change, color }) => (
-    <div className="rounded-xl border bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-900 transition-all hover:shadow-md">
-        <div className="flex items-center justify-between">
-            <h3 className="text-sm font-medium text-neutral-500 dark:text-neutral-400">{title}</h3>
-            <div className={`p-2 rounded-lg ${color}`}>{icon}</div>
-        </div>
-        <div className="mt-4">
-            <p className="text-3xl font-bold text-neutral-900 dark:text-neutral-50">{value}</p>
-            <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">{change}</p>
+const StatCard = ({ title, value, icon, change, color, extraStats }) => (
+    <div className="rounded-xl border bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-900 transition-all hover:shadow-md h-full flex flex-col justify-between">
+        <div>
+            <div className="flex items-center justify-between">
+                <h3 className="text-sm font-medium text-neutral-500 dark:text-neutral-400">{title}</h3>
+                <div className={`p-2 rounded-lg ${color}`}>{icon}</div>
+            </div>
+            <div className="mt-4">
+                <p className="text-3xl font-bold text-neutral-900 dark:text-neutral-50">{value}</p>
+                <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">{change}</p>
+
+                {extraStats && extraStats.length > 0 && (
+                    <div className="mt-4 flex flex-col gap-2 border-t border-neutral-100 dark:border-neutral-800 pt-3">
+                        {extraStats.map((stat, i) => (
+                            <div key={i} className="flex justify-between items-center text-sm">
+                                <span className="text-neutral-500 dark:text-neutral-400">{stat.label}</span>
+                                <span className="font-semibold text-neutral-700 dark:text-neutral-300">{stat.val}</span>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
         </div>
     </div>
 );
@@ -38,6 +51,8 @@ function DashboardOverview() {
             totalRevenue: 0,
             activeEvents: 0,
             unlistedEvents: 0,
+            totalEvents: 0,
+            expiredEvents: 0,
             totalOrganizers: 0,
             totalUsers: 0,
             ticketsSoldToday: 0
@@ -74,7 +89,17 @@ function DashboardOverview() {
 
     const stats = [
         { title: 'Total Revenue', value: `₹${data.stats.totalRevenue.toLocaleString()}`, icon: <Banknote size={20} />, change: 'Lifetime Earnings', color: 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' },
-        { title: 'Active Events', value: data.stats.activeEvents, icon: <Calendar size={20} />, change: 'Currently Published', color: 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' },
+        {
+            title: 'Active Events',
+            value: data.stats.totalEvents || 0,
+            icon: <Calendar size={20} />,
+            change: 'Total Events',
+            color: 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400',
+            extraStats: [
+                { label: 'Published Events', val: data.stats.activeEvents || 0 },
+                { label: 'Expired Events', val: data.stats.expiredEvents || 0 }
+            ]
+        },
         { title: 'Total Users', value: data.stats.totalUsers, icon: <Users size={20} />, change: 'Registered Attendees', color: 'bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400' },
         { title: 'Total Organizers', value: data.stats.totalOrganizers, icon: <Briefcase size={20} />, change: 'Verified Partners', color: 'bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400' },
     ];
@@ -85,9 +110,33 @@ function DashboardOverview() {
         <div className="space-y-6">
             {/* Stats Grid */}
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                {stats.map((stat, index) => (
-                    <StatCard key={index} {...stat} />
-                ))}
+                {stats.map((stat, index) => {
+                    // Wrap Total Revenue card with a link
+                    if (stat.title === 'Total Revenue') {
+                        return (
+                            <Link key={index} to="/organizer/dashboard/revenue" className="block transition-transform hover:-translate-y-1 h-full">
+                                <StatCard {...stat} />
+                            </Link>
+                        );
+                    }
+                    // Wrap Active Events card with a link
+                    if (stat.title === 'Active Events') {
+                        return (
+                            <Link key={index} to="/organizer/dashboard/events" className="block transition-transform hover:-translate-y-1 h-full">
+                                <StatCard {...stat} />
+                            </Link>
+                        );
+                    }
+                    // Wrap Total Users card with a link
+                    if (stat.title === 'Total Users') {
+                        return (
+                            <Link key={index} to="/organizer/dashboard/users" className="block transition-transform hover:-translate-y-1 h-full">
+                                <StatCard {...stat} />
+                            </Link>
+                        );
+                    }
+                    return <div key={index} className="h-full"><StatCard {...stat} /></div>;
+                })}
             </div>
 
             {/* Charts Section */}
@@ -164,20 +213,29 @@ function DashboardOverview() {
                                     </tr>
                                 </thead>
                                 <tbody className="text-sm">
-                                    {data.recentEvents.map(event => (
-                                        <tr key={event._id} className="group hover:bg-neutral-50 dark:hover:bg-neutral-700/50 transition-colors">
-                                            <td className="py-3 font-medium text-neutral-800 dark:text-neutral-200">{event.title}</td>
-                                            <td className="py-3 text-neutral-500">{event.organizer?.name?.firstName}</td>
-                                            <td className="py-3 text-neutral-500">{new Date(event.date).toLocaleDateString()}</td>
-                                            <td className="py-3 text-right">
-                                                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${event.status === 'published' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' :
-                                                        'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400'
-                                                    }`}>
-                                                    {event.status}
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    ))}
+                                    {data.recentEvents.map(event => {
+                                        const isExpired = new Date(event.date) < new Date();
+                                        return (
+                                            <tr key={event._id} className="group hover:bg-neutral-50 dark:hover:bg-neutral-700/50 transition-colors">
+                                                <td className="py-3 font-medium text-neutral-800 dark:text-neutral-200">{event.title}</td>
+                                                <td className="py-3 text-neutral-500">{event.organizer?.name?.firstName}</td>
+                                                <td className="py-3 text-neutral-500">{new Date(event.date).toLocaleDateString()}</td>
+                                                <td className="py-3 text-right">
+                                                    {isExpired ? (
+                                                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400">
+                                                            Expired
+                                                        </span>
+                                                    ) : (
+                                                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${event.status === 'published' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' :
+                                                            'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400'
+                                                            }`}>
+                                                            {event.status}
+                                                        </span>
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        )
+                                    })}
                                     {data.recentEvents.length === 0 && <tr><td colSpan="4" className="text-center py-4 text-neutral-500">No events found</td></tr>}
                                 </tbody>
                             </table>

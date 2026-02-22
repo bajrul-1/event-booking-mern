@@ -21,7 +21,10 @@ export const fetchAllCategoriesForAdmin = createAsyncThunk(
     'categories/fetchAllForAdmin',
     async (_, { getState, rejectWithValue }) => {
         try {
-            const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/categories`);
+            const { token } = getState().organizerAuth;
+            const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/categories/admin/all`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
             return data.categories;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || 'Failed to fetch categories.');
@@ -45,6 +48,41 @@ export const createNewCategory = createAsyncThunk(
             return data.category;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || 'Failed to create category.');
+        }
+    }
+);
+
+// --- Thunk 4: Update a category (Admin) ---
+export const updateCategory = createAsyncThunk(
+    'categories/update',
+    async ({ id, categoryData }, { getState, rejectWithValue }) => {
+        try {
+            const { token } = getState().organizerAuth;
+            const { data } = await axios.put(
+                `${import.meta.env.VITE_API_URL}/api/categories/${id}`,
+                categoryData,
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            return data.category;
+        } catch (error) {
+            return rejectWithValue(error.response?.data?.message || 'Failed to update category.');
+        }
+    }
+);
+
+// --- Thunk 5: Delete a category (Admin) ---
+export const deleteCategory = createAsyncThunk(
+    'categories/delete',
+    async (id, { getState, rejectWithValue }) => {
+        try {
+            const { token } = getState().organizerAuth;
+            await axios.delete(
+                `${import.meta.env.VITE_API_URL}/api/categories/${id}`,
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            return id;
+        } catch (error) {
+            return rejectWithValue(error.response?.data?.message || 'Failed to delete category.');
         }
     }
 );
@@ -98,6 +136,33 @@ const categoriesSlice = createSlice({
                 state.items.push(action.payload);
             })
             .addCase(createNewCategory.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.payload;
+            })
+            // Update Category
+            .addCase(updateCategory.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(updateCategory.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                const index = state.items.findIndex(item => item._id === action.payload._id);
+                if (index !== -1) {
+                    state.items[index] = action.payload;
+                }
+            })
+            .addCase(updateCategory.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.payload;
+            })
+            // Delete Category
+            .addCase(deleteCategory.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(deleteCategory.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.items = state.items.filter(item => item._id !== action.payload);
+            })
+            .addCase(deleteCategory.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.payload;
             });

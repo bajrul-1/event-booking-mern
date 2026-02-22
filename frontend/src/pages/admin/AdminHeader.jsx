@@ -1,17 +1,34 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { PanelLeft, User, Menu, Moon, Sun, Maximize, Bell, ChevronDown, UserCog, LockKeyhole } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Menu, Sun, Moon, Maximize, Bell, ChevronDown, UserCog, LockKeyhole } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { markAsRead } from '../../redux/features/notifications/notificationsSlice.js';
 
 function AdminHeader({ isSidebarOpen, setIsSidebarOpen }) {
 
     // Redux store theke data anchi
+    const { items: notifs, unreadCount } = useSelector((state) => state.notifications) || { items: [], unreadCount: 0 };
     const { organizer } = useSelector((state) => state.organizerAuth) || {};
     // Theme state (Redux theke)
     const { isDarkMode } = useSelector((state) => state.theme) || { isDarkMode: false };
     const dispatch = useDispatch();
 
     const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const [isNotifOpen, setIsNotifOpen] = useState(false);
+
+    const handleNotifToggle = () => {
+        setIsNotifOpen(!isNotifOpen);
+        setIsProfileOpen(false);
+        if (!isNotifOpen && unreadCount > 0) {
+            dispatch(markAsRead());
+        }
+    };
+
+    const handleProfileToggle = () => {
+        setIsProfileOpen(!isProfileOpen);
+        setIsNotifOpen(false);
+    };
 
     const handleToggleTheme = () => {
         // dispatch(toggleTheme()); // Redux action dispatch kora hobe
@@ -75,20 +92,62 @@ function AdminHeader({ isSidebarOpen, setIsSidebarOpen }) {
                     <Maximize className="h-5 w-5" />
                 </button>
 
-                {/* Notification Button (Dummy) */}
-                <button
-                    className={`${iconButtonClass} relative`}
-                >
-                    <Bell className="h-5 w-5" />
-                    <span className="absolute top-1 right-1 flex h-3 w-3">
-                        <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
-                    </span>
-                </button>
+                {/* Notification Dropdown */}
+                <div className="relative">
+                    <button
+                        onClick={handleNotifToggle}
+                        className={`${iconButtonClass} relative`}
+                    >
+                        <Bell className="h-5 w-5" />
+                        {unreadCount > 0 && (
+                            <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] text-white font-bold">
+                                {unreadCount > 9 ? '9+' : unreadCount}
+                            </span>
+                        )}
+                    </button>
+
+                    <AnimatePresence>
+                        {isNotifOpen && (
+                            <motion.div
+                                initial="hidden"
+                                animate="visible"
+                                exit="hidden"
+                                variants={dropdownVariants}
+                                transition={{ duration: 0.2 }}
+                                className="absolute right-0 top-14 w-80 rounded-lg bg-white dark:bg-neutral-800 shadow-xl border dark:border-neutral-700 z-40 overflow-hidden"
+                                onMouseLeave={() => setIsNotifOpen(false)}
+                            >
+                                <div className="p-3 border-b dark:border-neutral-700 flex justify-between items-center bg-neutral-50 dark:bg-neutral-800/50">
+                                    <h3 className="font-semibold text-neutral-800 dark:text-neutral-100">Notifications</h3>
+                                </div>
+                                <div className="max-h-80 overflow-y-auto">
+                                    {notifs.length === 0 ? (
+                                        <div className="p-6 text-center text-neutral-500 text-sm">No new notifications</div>
+                                    ) : (
+                                        <div className="flex flex-col">
+                                            {notifs.map((n, idx) => (
+                                                <Link
+                                                    key={idx}
+                                                    to={n.link || "#"}
+                                                    className="p-3 hover:bg-neutral-100 dark:hover:bg-neutral-700 border-b dark:border-neutral-700 last:border-0 transition-colors"
+                                                    onClick={() => setIsNotifOpen(false)}
+                                                >
+                                                    <p className="text-sm font-semibold text-neutral-800 dark:text-neutral-100">{n.name}</p>
+                                                    <p className="text-xs text-neutral-500 mt-1 truncate">{n.subject || "New Message"}</p>
+                                                </Link>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </div>
 
                 {/* User Profile Dropdown */}
                 <div className="relative">
                     <button
-                        onClick={() => setIsProfileOpen(!isProfileOpen)}
+                        onClick={handleProfileToggle}
                         className="flex items-center gap-2 cursor-pointer rounded-lg p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800"
                     >
                         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-500 text-white font-bold overflow-hidden shrink-0">

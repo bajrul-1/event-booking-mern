@@ -186,7 +186,7 @@ function CreateEventPage() {
                                 )}
                                 <FormField label="Category" name="category" as="select" isSelect>
                                     <option value="">Select category</option>
-                                    {categories?.map((cat) => (
+                                    {categories?.filter(cat => cat.status === 'active').map((cat) => (
                                         <option key={cat._id} value={cat._id}>{cat.name}</option>
                                     ))}
                                 </FormField>

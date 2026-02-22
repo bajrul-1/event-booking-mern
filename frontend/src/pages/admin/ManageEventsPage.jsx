@@ -49,10 +49,14 @@ function ManageEventsPage() {
 
     const handleStatusToggle = (eventId, currentStatus) => {
         const newStatus = currentStatus === 'published' ? 'unleashed' : 'published';
-        dispatch(updateEventStatus({ eventId, status: newStatus }))
-            .unwrap()
-            .then(() => toast.success(`Event status updated to ${newStatus}`))
-            .catch((err) => toast.error(err));
+
+        // Confirmation prompt before changing status
+        if (window.confirm(`Are you sure you want to change the status to ${newStatus}?`)) {
+            dispatch(updateEventStatus({ eventId, status: newStatus }))
+                .unwrap()
+                .then(() => toast.success(`Event status updated to ${newStatus}`))
+                .catch((err) => toast.error(err));
+        }
     };
 
     const handleDelete = (eventId) => {
@@ -141,73 +145,84 @@ function ManageEventsPage() {
                                 </tr>
                             </thead>
                             <tbody className="bg-white dark:bg-neutral-800 divide-y divide-neutral-200 dark:divide-neutral-700">
-                                {events.map(event => (
-                                    <tr key={event._id}>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="flex items-center">
-                                                <div className="flex-shrink-0 h-12 w-12 relative rounded-lg overflow-hidden bg-neutral-100 dark:bg-neutral-700">
-                                                    {event.imageUrl ? (
-                                                        <>
-                                                            <img
-                                                                src={event.imageUrl.startsWith('http') ? event.imageUrl : `${import.meta.env.VITE_API_URL}${event.imageUrl.startsWith('/') ? '' : '/'}${event.imageUrl}`}
-                                                                alt={event.title}
-                                                                className="h-full w-full object-cover"
-                                                                onError={(e) => {
-                                                                    e.target.style.display = 'none';
-                                                                    e.target.nextSibling.style.display = 'flex';
-                                                                }}
-                                                            />
-                                                            <div className="absolute inset-0 bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 items-center justify-center font-bold text-lg hidden">
+                                {events.map((event) => {
+                                    const isExpired = new Date(event.date) < new Date();
+                                    return (
+                                        <tr key={event._id} className={isExpired ? 'opacity-80' : ''}>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                <div className="flex items-center">
+                                                    <div className="flex-shrink-0 h-12 w-12 relative rounded-lg overflow-hidden bg-neutral-100 dark:bg-neutral-700">
+                                                        {event.imageUrl ? (
+                                                            <>
+                                                                <img
+                                                                    src={event.imageUrl.startsWith('http') ? event.imageUrl : `${import.meta.env.VITE_API_URL}${event.imageUrl.startsWith('/') ? '' : '/'}${event.imageUrl}`}
+                                                                    alt={event.title}
+                                                                    className="h-full w-full object-cover"
+                                                                    onError={(e) => {
+                                                                        e.target.style.display = 'none';
+                                                                        e.target.nextSibling.style.display = 'flex';
+                                                                    }}
+                                                                />
+                                                                <div className="absolute inset-0 bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 items-center justify-center font-bold text-lg hidden">
+                                                                    {event.title?.[0] || 'E'}
+                                                                </div>
+                                                            </>
+                                                        ) : (
+                                                            <div className="h-full w-full flex items-center justify-center bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 font-bold text-lg">
                                                                 {event.title?.[0] || 'E'}
                                                             </div>
-                                                        </>
-                                                    ) : (
-                                                        <div className="h-full w-full flex items-center justify-center bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 font-bold text-lg">
-                                                            {event.title?.[0] || 'E'}
-                                                        </div>
-                                                    )}
+                                                        )}
+                                                    </div>
+                                                    <div className="ml-4">
+                                                        <div className="text-sm font-medium text-neutral-900 dark:text-neutral-100">{event.title}</div>
+                                                        <div className="text-sm text-neutral-500 dark:text-neutral-400">{event.location}</div>
+                                                    </div>
                                                 </div>
-                                                <div className="ml-4">
-                                                    <div className="text-sm font-medium text-neutral-900 dark:text-neutral-100">{event.title}</div>
-                                                    <div className="text-sm text-neutral-500 dark:text-neutral-400">{event.location}</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-500 dark:text-neutral-300">{formatDate(event.date)}</td>
-
-                                        {activeTab === 'allEvents' && (
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-500 dark:text-neutral-300">
-                                                {event.organizer?.name?.firstName || 'N/A'}
                                             </td>
-                                        )}
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <button
-                                                onClick={() => handleStatusToggle(event._id, event.status)}
-                                                className={`flex items-center gap-1 text-sm font-medium ${event.status === 'published' ? 'text-green-500' : 'text-neutral-400'}`}
-                                            >
-                                                {event.status === 'published' ? <ToggleRight size={20} /> : <ToggleLeft size={20} />}
-                                                <span className="capitalize">{event.status === 'unleashed' ? 'Unleashed' : event.status}</span>
-                                            </button>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <div className="flex items-center justify-end gap-2">
-                                                <Link to={`/events/${event._id}`} className="text-blue-500 hover:text-blue-600 p-2 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-full transition-colors" title="View Event">
-                                                    <Eye size={18} />
-                                                </Link>
-                                                <Link to={`/organizer/dashboard/events/edit/${event._id}`} className="text-primary-500 hover:text-primary-600 p-2 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-full transition-colors" title="Edit Event">
-                                                    <Edit size={18} />
-                                                </Link>
-                                                <button
-                                                    onClick={() => handleDelete(event._id)}
-                                                    className="text-error-500 hover:text-error-600 p-2 hover:bg-error-50 dark:hover:bg-error-900/20 rounded-full transition-colors"
-                                                    title="Delete Event"
-                                                >
-                                                    <Trash2 size={18} />
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))}
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-500 dark:text-neutral-300">{formatDate(event.date)}</td>
+
+                                            {activeTab === 'allEvents' && (
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-500 dark:text-neutral-300">
+                                                    {event.organizer?.name?.firstName || 'N/A'}
+                                                </td>
+                                            )}
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                {isExpired ? (
+                                                    <div className="flex items-center gap-1 text-sm font-bold text-red-500 bg-red-50 dark:bg-red-900/20 px-2 py-1 rounded inline-flex">
+                                                        <span>Expired</span>
+                                                    </div>
+                                                ) : (
+                                                    <button
+                                                        onClick={() => handleStatusToggle(event._id, event.status)}
+                                                        className={`flex items-center gap-1 text-sm font-medium ${event.status === 'published' ? 'text-green-500' : 'text-neutral-400'}`}
+                                                    >
+                                                        {event.status === 'published' ? <ToggleRight size={20} /> : <ToggleLeft size={20} />}
+                                                        <span className="capitalize">{event.status === 'unleashed' ? 'Unleashed' : event.status}</span>
+                                                    </button>
+                                                )}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <div className="flex items-center justify-end gap-2">
+                                                    <Link to={`/events/${event._id}`} className="text-blue-500 hover:text-blue-600 p-2 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-full transition-colors" title="View Event">
+                                                        <Eye size={18} />
+                                                    </Link>
+                                                    {!isExpired && (
+                                                        <Link to={`/organizer/dashboard/events/edit/${event._id}`} className="text-primary-500 hover:text-primary-600 p-2 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-full transition-colors" title="Edit Event">
+                                                            <Edit size={18} />
+                                                        </Link>
+                                                    )}
+                                                    <button
+                                                        onClick={() => handleDelete(event._id)}
+                                                        className="text-error-500 hover:text-error-600 p-2 hover:bg-error-50 dark:hover:bg-error-900/20 rounded-full transition-colors"
+                                                        title="Delete Event"
+                                                    >
+                                                        <Trash2 size={18} />
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )
+                                })}
                             </tbody>
                         </table>
                     </div>

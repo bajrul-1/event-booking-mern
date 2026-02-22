@@ -53,7 +53,7 @@ const OrganizerProfile = () => {
                 <div className="h-48 bg-neutral-200 dark:bg-neutral-700 relative">
                     {organizer.coverImage ? (
                         <img
-                            src={`${import.meta.env.VITE_API_URL}${organizer.coverImage.startsWith('/') ? '' : '/'}${organizer.coverImage}`}
+                            src={organizer.coverImage}
                             alt="Cover"
                             className="w-full h-full object-cover"
                         />
@@ -67,7 +67,7 @@ const OrganizerProfile = () => {
                             <div className="w-32 h-32 rounded-full bg-white dark:bg-neutral-800 p-1.5 shadow-lg overflow-hidden shrink-0">
                                 {organizer.profileImage ? (
                                     <img
-                                        src={`${import.meta.env.VITE_API_URL}${organizer.profileImage.startsWith('/') ? '' : '/'}${organizer.profileImage}`}
+                                        src={organizer.profileImage}
                                         alt={organizer.name?.firstName}
                                         className="w-full h-full rounded-full object-cover"
                                     />

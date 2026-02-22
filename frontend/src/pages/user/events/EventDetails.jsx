@@ -34,6 +34,9 @@ function EventDetails() {
         }
     }, [dispatch, eventId]);
 
+    // Check if the event is in the past
+    const isExpired = event ? new Date(event.date) < new Date() : false;
+
     const handleBookNow = (tier) => {
         if (!isLoaded) return;
 
@@ -96,6 +99,11 @@ function EventDetails() {
                             <span className="bg-primary-500/10 text-primary-500 px-3 py-1 rounded-full text-sm font-semibold">
                                 {event.category?.name || 'Category'}
                             </span>
+                            {isExpired && (
+                                <span className="ml-3 bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400 px-3 py-1 rounded-full text-sm font-semibold border border-red-200 dark:border-red-800">
+                                    Event Ended
+                                </span>
+                            )}
                             <h1 className="text-4xl font-bold font-heading text-neutral-900 dark:text-neutral-100 mt-4">
                                 {event.title}
                             </h1>
@@ -136,9 +144,13 @@ function EventDetails() {
                                             </div>
                                             <button
                                                 onClick={() => handleBookNow(tier)}
-                                                className="bg-primary-500 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-primary-600 transition-colors"
+                                                disabled={isExpired}
+                                                className={`px-5 py-2 rounded-lg text-sm font-medium transition-colors ${isExpired
+                                                    ? 'bg-neutral-300 text-neutral-500 cursor-not-allowed dark:bg-neutral-600 dark:text-neutral-400'
+                                                    : 'bg-primary-500 text-white hover:bg-primary-600'
+                                                    }`}
                                             >
-                                                Book Now
+                                                {isExpired ? 'Event Ended' : 'Book Now'}
                                             </button>
                                         </div>
                                     ))}

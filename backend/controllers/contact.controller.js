@@ -1,4 +1,5 @@
 import Contact from '../models/Contact.js';
+import { io } from '../index.js';
 
 export const submitContactForm = async (req, res) => {
     try {
@@ -18,28 +19,24 @@ export const submitContactForm = async (req, res) => {
             ipAddress = '127.0.0.1';
         }
 
-        // Rate Limiting Logic: Check for last message from this IP or User ID
-        const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
+        // Rate Limiting Logic: Only for non-logged-in users
+        if (!userId) {
+            const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
 
-        let query = {
-            createdAt: { $gte: fiveMinutesAgo },
-            $or: [{ ipAddress }]
-        };
+            const lastMessage = await Contact.findOne({
+                createdAt: { $gte: fiveMinutesAgo },
+                ipAddress: ipAddress
+            }).sort({ createdAt: -1 });
 
-        if (userId) {
-            query.$or.push({ userId });
-        }
+            if (lastMessage) {
+                const timeDiff = Date.now() - new Date(lastMessage.createdAt).getTime();
+                const remainingTime = Math.ceil((5 * 60 * 1000 - timeDiff) / 1000); // In seconds
 
-        const lastMessage = await Contact.findOne(query).sort({ createdAt: -1 });
-
-        if (lastMessage) {
-            const timeDiff = Date.now() - new Date(lastMessage.createdAt).getTime();
-            const remainingTime = Math.ceil((5 * 60 * 1000 - timeDiff) / 1000); // In seconds
-
-            return res.status(429).json({
-                message: 'Rate limit exceeded. Please wait before sending another message.',
-                remainingTime: remainingTime
-            });
+                return res.status(429).json({
+                    message: 'Rate limit exceeded. Please wait before sending another message.',
+                    remainingTime: remainingTime
+                });
+            }
         }
 
         // Save new message
@@ -53,6 +50,16 @@ export const submitContactForm = async (req, res) => {
         });
 
         await newContact.save();
+
+        // Emit real-time socket event to connected clients (admin dashboard)
+        io.emit('new_message', {
+            _id: newContact._id,
+            name: newContact.name,
+            email: newContact.email,
+            subject: newContact.subject,
+            message: newContact.message,
+            createdAt: newContact.createdAt
+        });
 
         res.status(201).json({
             message: 'Message sent successfully!',

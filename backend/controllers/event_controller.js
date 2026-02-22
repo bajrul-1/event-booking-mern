@@ -25,6 +25,14 @@ export const createEvent = async (req, res) => {
             try { eventData.guests = JSON.parse(eventData.guests); } catch (e) { console.error('Error parsing guests:', e); }
         }
 
+        const categoryDoc = await Category.findById(eventData.category);
+        if (!categoryDoc) {
+            return res.status(404).json({ success: false, message: 'Selected category does not exist.' });
+        }
+        if (categoryDoc.status === 'inactive') {
+            return res.status(400).json({ success: false, message: 'Cannot create an event under an inactive category.' });
+        }
+
         const imageUrl = req.file ? req.file.path : eventData.imageUrl;
 
         const newEvent = new Event({
@@ -63,6 +71,11 @@ export const updateEvent = async (req, res) => {
         const event = await Event.findOne({ _id: id, organizer: organizerId });
         if (!event) {
             return res.status(404).json({ success: false, message: 'Event not found or unauthorized.' });
+        }
+
+        // Prevent updating expired events
+        if (new Date(event.date) < new Date()) {
+            return res.status(400).json({ success: false, message: 'Cannot update an expired event.' });
         }
 
         if (req.file) {
@@ -120,7 +133,11 @@ export const getAllEvents = async (req, res) => {
         const { page = 1, limit = 9, search, category, location, sortBy } = req.query;
 
         // 1. Build Query Object
-        const query = { status: 'published' };
+        // Only show published AND future events on the main page
+        const query = {
+            status: 'published',
+            date: { $gte: new Date() } // Filter out expired events
+        };
 
         // Search (Title)
         if (search) {
@@ -243,14 +260,17 @@ export const updateEventStatus = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Invalid status value.' });
         }
 
-        const updatedEvent = await Event.findOneAndUpdate(
-            { _id: id, organizer: organizerId },
-            { $set: { status: status } },
-            { new: true }
-        );
-        if (!updatedEvent) {
+        const event = await Event.findOne({ _id: id, organizer: organizerId });
+        if (!event) {
             return res.status(404).json({ success: false, message: 'Event not found or not authorized.' });
         }
+
+        if (new Date(event.date) < new Date()) {
+            return res.status(400).json({ success: false, message: 'Cannot change status of an expired event.' });
+        }
+
+        event.status = status;
+        const updatedEvent = await event.save();
         res.status(200).json({ success: true, message: 'Event status updated.', event: updatedEvent });
     } catch (error) {
         res.status(500).json({ success: false, message: 'Server error.' });

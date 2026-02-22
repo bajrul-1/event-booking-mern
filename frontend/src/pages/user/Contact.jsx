@@ -14,6 +14,12 @@ function Contact() {
 
     // Initialize/Check Cooldown on Mount
     useEffect(() => {
+        if (user) {
+            setCooldown(0);
+            localStorage.removeItem('contactNextAllowedTime');
+            return;
+        }
+
         const nextAllowedTime = localStorage.getItem('contactNextAllowedTime');
         if (nextAllowedTime) {
             const remaining = Math.ceil((parseInt(nextAllowedTime) - Date.now()) / 1000);
@@ -68,17 +74,22 @@ function Contact() {
                 toast.success(response.data.message);
                 resetForm();
 
-                // Set 5 minute cooldown
-                const cooldownSeconds = 300;
-                setCooldown(cooldownSeconds);
-                localStorage.setItem('contactNextAllowedTime', Date.now() + (cooldownSeconds * 1000));
+                // Set 5 minute cooldown ONLY for non-logged-in users
+                if (!user) {
+                    const cooldownSeconds = 300;
+                    setCooldown(cooldownSeconds);
+                    localStorage.setItem('contactNextAllowedTime', Date.now() + (cooldownSeconds * 1000));
+                }
             }
         } catch (error) {
             if (error.response && error.response.status === 429) {
                 const remaining = error.response.data.remainingTime;
                 toast.error(error.response.data.message);
-                setCooldown(remaining);
-                localStorage.setItem('contactNextAllowedTime', Date.now() + (remaining * 1000));
+
+                if (!user) {
+                    setCooldown(remaining);
+                    localStorage.setItem('contactNextAllowedTime', Date.now() + (remaining * 1000));
+                }
             } else {
                 toast.error(error.response?.data?.message || "Failed to send message. Please try again.");
             }

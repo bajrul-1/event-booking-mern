@@ -2,6 +2,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import express from 'express';
+import http from 'http';
+import { Server } from 'socket.io';
 import cors from 'cors';
 import connectDB from './utils/database.js';
 
@@ -21,7 +23,20 @@ import contactRouter from './routers/contact.routes.js'; // New Contact Route
 const app = express();
 const PORT = process.env.PORT;
 
+// Setup HTTP server and Socket.io
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: [process.env.CLIENT_URL, 'http://localhost:5173', 'http://localhost:3000'],
+    methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH', 'HEAD'],
+    credentials: true,
+  }
+});
+
 app.use(express.json());
+
+// Export io so controllers can emit events
+export { io };
 
 //=================================|| CORS CONFIGURATION ||=================================>>>
 const corsPolicy = {
@@ -48,7 +63,7 @@ app.use('/api/contact', contactRouter); // New Contact Route
 //=================================|| DATABASE CONNECTION ||=================================>>>
 connectDB().then(() => {
   console.log('Database connected successfully');
-  app.listen(PORT, () => {
+  server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
 });
