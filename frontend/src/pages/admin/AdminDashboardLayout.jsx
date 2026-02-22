@@ -48,18 +48,31 @@ function AdminDashboardLayout() {
 
             // Show Browser Notification if permitted
             if ('Notification' in window && Notification.permission === 'granted') {
-                new Notification('New Contact Message', {
+                const notification = new Notification('New Contact Message', {
                     body: `${messageData.name} said: ${messageData.message.substring(0, 50)}...`,
                     icon: '/favicon.ico' // Or any app icon you have
                 });
+
+                notification.onclick = (event) => {
+                    event.preventDefault(); // Prevent the browser from focusing the Notification's tab
+                    window.focus(); // Focus the browser window
+                    // Route to messages page
+                    window.location.href = '/organizer/dashboard/messages';
+                };
             } else if ('Notification' in window && Notification.permission !== 'denied') {
                 // Try requesting permission again just in case
                 Notification.requestPermission().then(permission => {
                     if (permission === 'granted') {
-                        new Notification('New Contact Message', {
+                        const notification = new Notification('New Contact Message', {
                             body: `${messageData.name} said: ${messageData.message.substring(0, 50)}...`,
                             icon: '/favicon.ico'
                         });
+
+                        notification.onclick = (event) => {
+                            event.preventDefault();
+                            window.focus();
+                            window.location.href = '/organizer/dashboard/messages';
+                        };
                     }
                 });
             }
