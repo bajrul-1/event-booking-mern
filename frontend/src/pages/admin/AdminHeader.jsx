@@ -138,11 +138,19 @@ function AdminHeader({ isSidebarOpen, setIsSidebarOpen }) {
                                                 <Link
                                                     key={idx}
                                                     to={n.link || "#"}
-                                                    className="p-3 hover:bg-neutral-100 dark:hover:bg-neutral-700 border-b dark:border-neutral-700 last:border-0 transition-colors"
+                                                    className={`p-3 border-b dark:border-neutral-700 last:border-0 transition-colors ${!n.isRead
+                                                            ? 'bg-primary-50/50 dark:bg-primary-900/10 hover:bg-primary-100 dark:hover:bg-primary-900/30'
+                                                            : 'hover:bg-neutral-100 dark:hover:bg-neutral-700'
+                                                        }`}
                                                     onClick={() => setIsNotifOpen(false)}
                                                 >
-                                                    <p className="text-sm font-semibold text-neutral-800 dark:text-neutral-100">{n.name}</p>
-                                                    <p className="text-xs text-neutral-500 mt-1 truncate">{n.subject || "New Message"}</p>
+                                                    <div className="flex justify-between items-start mb-1">
+                                                        <p className={`text-sm ${!n.isRead ? 'font-bold text-primary-600 dark:text-primary-400' : 'font-semibold text-neutral-800 dark:text-neutral-100'}`}>
+                                                            {n.title || "New Notification"}
+                                                        </p>
+                                                        {!n.isRead && <span className="w-2 h-2 rounded-full bg-primary-500 mt-1 shrink-0"></span>}
+                                                    </div>
+                                                    <p className="text-xs text-neutral-500 truncate">{n.message || "You have a new alert"}</p>
                                                 </Link>
                                             ))}
                                         </div>
