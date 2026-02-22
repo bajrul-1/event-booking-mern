@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Menu, Sun, Moon, Maximize, Bell, ChevronDown, UserCog, LockKeyhole } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { markAsRead } from '../../redux/features/notifications/notificationsSlice.js';
+import axios from 'axios';
 
 function AdminHeader({ isSidebarOpen, setIsSidebarOpen }) {
 
@@ -17,11 +18,19 @@ function AdminHeader({ isSidebarOpen, setIsSidebarOpen }) {
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [isNotifOpen, setIsNotifOpen] = useState(false);
 
-    const handleNotifToggle = () => {
+    const handleNotifToggle = async () => {
         setIsNotifOpen(!isNotifOpen);
         setIsProfileOpen(false);
         if (!isNotifOpen && unreadCount > 0) {
-            dispatch(markAsRead());
+            try {
+                const token = localStorage.getItem('organizerToken');
+                await axios.put(`${import.meta.env.VITE_API_URL}/api/notifications/mark-read`, {}, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                dispatch(markAsRead());
+            } catch (error) {
+                console.error("Failed to mark notifications as read on server:", error);
+            }
         }
     };
 

@@ -1,4 +1,5 @@
 import Contact from '../models/Contact.js';
+import Notification from '../models/Notification.js';
 import { io } from '../index.js';
 
 export const submitContactForm = async (req, res) => {
@@ -51,14 +52,28 @@ export const submitContactForm = async (req, res) => {
 
         await newContact.save();
 
+        // Create persistent Notification
+        const persistentNotification = new Notification({
+            type: 'contact_message',
+            title: `New Message from ${newContact.name}`,
+            message: newContact.subject || newContact.message.substring(0, 50),
+            link: '/organizer/dashboard/messages'
+        });
+        await persistentNotification.save();
+
         // Emit real-time socket event to connected clients (admin dashboard)
         io.emit('new_message', {
-            _id: newContact._id,
-            name: newContact.name,
-            email: newContact.email,
+            _id: persistentNotification._id,
+            name: newContact.name, // Keep for toast/browser payload
             subject: newContact.subject,
             message: newContact.message,
-            createdAt: newContact.createdAt
+
+            // Notification payload matching DB
+            type: persistentNotification.type,
+            title: persistentNotification.title,
+            link: persistentNotification.link,
+            isRead: persistentNotification.isRead,
+            createdAt: persistentNotification.createdAt
         });
 
         res.status(201).json({

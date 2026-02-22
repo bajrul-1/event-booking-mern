@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import { useDispatch } from 'react-redux';
-import { addNotification } from '../../redux/features/notifications/notificationsSlice.js';
+import { addNotification, setNotifications } from '../../redux/features/notifications/notificationsSlice.js';
+import axios from 'axios';
 import AdminSidebar from './AdminSidebar.jsx';
 import AdminHeader from './AdminHeader.jsx';
 
@@ -15,6 +16,22 @@ function AdminDashboardLayout() {
         if ('Notification' in window && Notification.permission === 'default') {
             Notification.requestPermission();
         }
+
+        // Fetch Initial Notifications from DB
+        const fetchNotifications = async () => {
+            try {
+                const token = localStorage.getItem('organizerToken');
+                const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/notifications`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                if (data.success) {
+                    dispatch(setNotifications(data.notifications));
+                }
+            } catch (error) {
+                console.error("Failed to fetch notifications:", error);
+            }
+        };
+        fetchNotifications();
 
         // Initialize Socket connection
         const socket = io(import.meta.env.VITE_API_URL);

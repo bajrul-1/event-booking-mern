@@ -13,6 +13,7 @@ import categoryRouter from './routers/category.route.js';
 import paymentRouter from './routers/payment_routes.js';
 import orderRouter from './routers/order_routes.js';
 import couponRouter from './routers/coupon_routes.js';
+import notificationRoutes from './routes/notification.route.js'; // NEW
 
 import organizerRouter from './routers/organizer.auth.route.js';
 import adminRouter from './routers/admin.routes.js';
@@ -56,6 +57,7 @@ app.use('/api/orders', orderRouter);
 app.use('/api/categories', categoryRouter);
 app.use('/api/payments', paymentRouter);
 app.use('/api/coupons', couponRouter);
+app.use('/api/notifications', notificationRoutes); // NEW
 app.use('/api/organizers', organizerRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/contact', contactRouter); // New Contact Route
