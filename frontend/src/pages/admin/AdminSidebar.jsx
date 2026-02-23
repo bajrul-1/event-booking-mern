@@ -38,6 +38,7 @@ function AdminSidebar({ isSidebarOpen }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { organizer } = useSelector((state) => state.organizerAuth) || {};
+    const { data: settings } = useSelector((state) => state.settings); // ADDED
     const isAdmin = organizer?.role === 'admin';
 
     const iconClass = "h-5 w-5 shrink-0";
@@ -66,7 +67,7 @@ function AdminSidebar({ isSidebarOpen }) {
                     animate={isSidebarOpen ? "open" : "closed"}
                     className="ml-2 text-2xl font-bold font-heading whitespace-nowrap"
                 >
-                    EventBooking
+                    {settings?.siteName || 'EventBooking'}
                 </motion.span>
             </div>
 

@@ -2,8 +2,10 @@ import { NavLink } from "react-router-dom";
 // FIX: Corrected the import path for react-icons
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from "react-icons/fa6";
 import { Send } from "lucide-react"; // Using lucide-react as per your package.json
+import { useSelector } from 'react-redux';
 
 function Footer() {
+    const { data: settings } = useSelector((state) => state.settings);
     const linkClass = "font-body text-neutral-700 dark:text-neutral-300 hover:text-primary-500 transition-colors duration-300";
     const socialIconClass = "w-10 h-10 bg-neutral-200 dark:bg-neutral-800 rounded-full flex items-center justify-center text-neutral-800 dark:text-neutral-200 hover:bg-primary-500 hover:text-white transition-all duration-300 transform hover:scale-110";
 
@@ -15,13 +17,13 @@ function Footer() {
                     {/* Left: Logo, Description, Copyright */}
                     <div className="md:col-span-4 flex flex-col items-center md:items-start text-center md:text-left">
                         <h2 className="text-3xl font-bold font-heading bg-gradient-to-r from-primary-500 to-secondary-500 text-transparent bg-clip-text">
-                            EventBooking
+                            {settings?.siteName || 'EventBooking'}
                         </h2>
                         <p className="mt-4 text-neutral-700 dark:text-neutral-300 max-w-xs">
-                            The ultimate platform to discover, book, and host unforgettable events.
+                            {settings?.seoDescription || "The ultimate platform to discover, book, and host unforgettable events."}
                         </p>
                         <p className="mt-8 text-sm text-neutral-500 dark:text-neutral-400">
-                            &copy; {new Date().getFullYear()} EventBooking. All rights reserved.
+                            &copy; {new Date().getFullYear()} {settings?.siteName || 'EventBooking'}. All rights reserved.
                         </p>
                     </div>
 
@@ -56,10 +58,10 @@ function Footer() {
                             </div>
                         </form>
                         <div className="flex space-x-4 mt-6">
-                            <a href="#" className={socialIconClass} aria-label="Facebook"><FaFacebookF /></a>
-                            <a href="#" className={socialIconClass} aria-label="Twitter"><FaTwitter /></a>
-                            <a href="#" className={socialIconClass} aria-label="Instagram"><FaInstagram /></a>
-                            <a href="#" className={socialIconClass} aria-label="LinkedIn"><FaLinkedinIn /></a>
+                            {settings?.socialLinks?.facebook && <a href={settings.socialLinks.facebook} target="_blank" rel="noopener noreferrer" className={socialIconClass} aria-label="Facebook"><FaFacebookF /></a>}
+                            {settings?.socialLinks?.twitter && <a href={settings.socialLinks.twitter} target="_blank" rel="noopener noreferrer" className={socialIconClass} aria-label="Twitter"><FaTwitter /></a>}
+                            {settings?.socialLinks?.instagram && <a href={settings.socialLinks.instagram} target="_blank" rel="noopener noreferrer" className={socialIconClass} aria-label="Instagram"><FaInstagram /></a>}
+                            {settings?.socialLinks?.linkedin && <a href={settings.socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className={socialIconClass} aria-label="LinkedIn"><FaLinkedinIn /></a>}
                         </div>
                     </div>
                 </div>

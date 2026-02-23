@@ -57,7 +57,7 @@ export const submitContactForm = async (req, res) => {
             type: 'contact_message',
             title: `New Message from ${newContact.name}`,
             message: newContact.subject || newContact.message.substring(0, 50),
-            link: '/organizer/dashboard/messages'
+            link: `/organizer/dashboard/messages/${newContact._id}`
         });
         await persistentNotification.save();
 
@@ -118,6 +118,13 @@ export const getMessageById = async (req, res) => {
         if (!message) {
             return res.status(404).json({ success: false, message: "Message not found" });
         }
+
+        // Mark as read when opened
+        if (!message.isRead) {
+            message.isRead = true;
+            await message.save();
+        }
+
         res.status(200).json({ success: true, message });
     } catch (error) {
         console.error("Error fetching message:", error);

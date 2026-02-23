@@ -7,10 +7,12 @@ import contactValidationSchema from '../../validation/contactSchema';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { motion } from 'framer-motion';
+import { useSelector } from 'react-redux';
 
 function Contact() {
     const { user } = useUser();
     const [cooldown, setCooldown] = useState(0);
+    const { data: settings } = useSelector((state) => state.settings);
 
     // Initialize/Check Cooldown on Mount
     useEffect(() => {
@@ -51,11 +53,11 @@ function Contact() {
     const formatTime = (seconds) => {
         const m = Math.floor(seconds / 60);
         const s = seconds % 60;
-        return `${m}m ${s}s`;
+        return `${m}m ${s} s`;
     };
 
     const initialValues = {
-        name: user ? `${user.firstName} ${user.lastName}`.trim() : '',
+        name: user ? `${user.firstName} ${user.lastName} `.trim() : '',
         email: user ? user.primaryEmailAddress?.emailAddress : '',
         subject: '',
         message: '',
@@ -65,7 +67,7 @@ function Contact() {
         if (cooldown > 0) return;
 
         try {
-            const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/contact`, {
+            const response = await axios.post(`${import.meta.env.VITE_API_URL} /api/contact`, {
                 ...values,
                 userId: user?.id
             });
@@ -140,20 +142,20 @@ function Contact() {
                             <ContactInfoCard
                                 icon={Phone}
                                 title="Call Us"
-                                content="+91 62954 45049"
-                                link="tel:+916295445049"
+                                content={settings?.contactPhone || "+91 62954 45049"}
+                                link={`tel:${settings?.contactPhone || "+916295445049"} `}
                             />
                             <ContactInfoCard
                                 icon={Mail}
                                 title="Email Us"
-                                content="support@eventbooking.com"
-                                link="mailto:support@eventbooking.com"
+                                content={settings?.contactEmail || "support@eventbooking.com"}
+                                link={`mailto:${settings?.contactEmail || "support@eventbooking.com"} `}
                             />
                             <ContactInfoCard
                                 icon={MapPin}
                                 title="Visit Us"
-                                content="Bankura, West Bengal, India"
-                                link="https://www.google.com/maps/search/?api=1&query=Bankura, West Bengal, India"
+                                content={settings?.contactAddress || "Bankura, West Bengal, India"}
+                                link={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(settings?.contactAddress || "Bankura, West Bengal, India")}`}
                             />
                         </div>
                     </motion.div>

@@ -8,7 +8,7 @@ import couponsReducer from './features/coupons/couponsSlice.js';
 import categoriesReducer from './features/categories/categoriesSlice.js';
 import organizersReducer from './features/organizer/organizerSlice.js';
 import notificationsReducer from './features/notifications/notificationsSlice.js';
-
+import settingsReducer from './features/settingsSlice.js';
 
 export const store = configureStore({
     reducer: {
@@ -21,6 +21,7 @@ export const store = configureStore({
         organizerAuth: organizerAuthReducer,
         organizers: organizersReducer,
         notifications: notificationsReducer,
+        settings: settingsReducer,
     },
 })
 

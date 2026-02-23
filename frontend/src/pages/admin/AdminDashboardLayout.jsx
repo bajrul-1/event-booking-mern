@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import { useDispatch } from 'react-redux';
-import { addNotification, setNotifications } from '../../redux/features/notifications/notificationsSlice.js';
+import { addNotification, setNotifications, markOneAsRead } from '../../redux/features/notifications/notificationsSlice.js';
 import axios from 'axios';
 import AdminSidebar from './AdminSidebar.jsx';
 import AdminHeader from './AdminHeader.jsx';
@@ -43,7 +43,7 @@ function AdminDashboardLayout() {
             dispatch(addNotification({
                 ...messageData,
                 type: 'contact_message',
-                link: '/organizer/dashboard/messages' // Fixed route targeting the actual mounted path
+                link: messageData.link || '/organizer/dashboard/messages'
             }));
 
             // Show Browser Notification if permitted
@@ -53,11 +53,22 @@ function AdminDashboardLayout() {
                     icon: '/favicon.ico' // Or any app icon you have
                 });
 
-                notification.onclick = (event) => {
+                notification.onclick = async (event) => {
                     event.preventDefault(); // Prevent the browser from focusing the Notification's tab
                     window.focus(); // Focus the browser window
+
+                    try {
+                        const token = localStorage.getItem('organizerToken');
+                        await axios.put(`${import.meta.env.VITE_API_URL}/api/notifications/${messageData._id}/mark-read`, {}, {
+                            headers: { Authorization: `Bearer ${token}` }
+                        });
+                        dispatch(markOneAsRead(messageData._id));
+                    } catch (error) {
+                        console.error("Failed to mark notification as read:", error);
+                    }
+
                     // Route to messages page
-                    window.location.href = '/organizer/dashboard/messages';
+                    window.location.href = messageData.link || '/organizer/dashboard/messages';
                 };
             } else if ('Notification' in window && Notification.permission !== 'denied') {
                 // Try requesting permission again just in case
@@ -68,10 +79,21 @@ function AdminDashboardLayout() {
                             icon: '/favicon.ico'
                         });
 
-                        notification.onclick = (event) => {
+                        notification.onclick = async (event) => {
                             event.preventDefault();
                             window.focus();
-                            window.location.href = '/organizer/dashboard/messages';
+
+                            try {
+                                const token = localStorage.getItem('organizerToken');
+                                await axios.put(`${import.meta.env.VITE_API_URL}/api/notifications/${messageData._id}/mark-read`, {}, {
+                                    headers: { Authorization: `Bearer ${token}` }
+                                });
+                                dispatch(markOneAsRead(messageData._id));
+                            } catch (error) {
+                                console.error("Failed to mark notification as read:", error);
+                            }
+
+                            window.location.href = messageData.link || '/organizer/dashboard/messages';
                         };
                     }
                 });

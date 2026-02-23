@@ -18,6 +18,7 @@ import notificationRoutes from './routes/notification.route.js'; // NEW
 import organizerRouter from './routers/organizer.auth.route.js';
 import adminRouter from './routers/admin.routes.js';
 import contactRouter from './routers/contact.routes.js'; // New Contact Route
+import settingRouter from './routes/setting.route.js'; // NEW
 
 
 
@@ -61,6 +62,7 @@ app.use('/api/notifications', notificationRoutes); // NEW
 app.use('/api/organizers', organizerRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/contact', contactRouter); // New Contact Route
+app.use('/api/settings', settingRouter); // NEW
 
 //=================================|| DATABASE CONNECTION ||=================================>>>
 connectDB().then(() => {

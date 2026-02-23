@@ -1,5 +1,17 @@
 import Notification from '../models/Notification.js';
 
+// Mark a single notification as read (Admin Only)
+export const markAsRead = async (req, res) => {
+    try {
+        const { id } = req.params;
+        await Notification.findByIdAndUpdate(id, { isRead: true });
+        res.status(200).json({ success: true, message: "Notification marked as read" });
+    } catch (error) {
+        console.error("Error marking notification as read:", error);
+        res.status(500).json({ success: false, message: "Failed to mark notification as read" });
+    }
+};
+
 // Get all notifications (Admin Only)
 export const getNotifications = async (req, res) => {
     try {

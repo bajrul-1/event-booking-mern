@@ -1,4 +1,7 @@
+import React, { useEffect } from 'react';
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom'; // useLocation hook add kora holo
+import { useDispatch } from 'react-redux';
+import { fetchSettings } from './redux/features/settingsSlice';
 
 import { SignedIn, SignedOut, SignIn, SignUp, RedirectToSignIn } from '@clerk/clerk-react';
 
@@ -33,12 +36,19 @@ import CreateEventPage from './pages/Organizer/CreateEventPage';
 import ManageCategoryPage from './pages/admin/ManageCategoryPage';
 import AdminMessages from './pages/admin/AdminMessages';
 import AdminMessageDetails from './pages/admin/AdminMessageDetails'; // Import add kora holo
+import AdminSettings from './pages/admin/AdminSettings'; // Import Settings page
 import BookingStatus from './pages/user/checkout/BookingStatus';
 import RevenueDetailsPage from './pages/admin/RevenueDetailsPage';
 import UserDetailsPage from './pages/admin/UserDetailsPage';
 
 function App() {
   const location = useLocation(); // useLocation hook-ta use kora hocche
+  const dispatch = useDispatch();
+
+  // Fetch global settings on initial load
+  useEffect(() => {
+    dispatch(fetchSettings());
+  }, [dispatch]);
 
   // Checking if the current path starts with /organizer/dashboard
   const isAdminDashboardRoute = location.pathname.startsWith('/organizer/dashboard');
@@ -92,6 +102,7 @@ function App() {
                 <Route path="messages/:id" element={<AdminMessageDetails />} /> {/* Notun Route for Message Details */}
                 <Route path="revenue" element={<RevenueDetailsPage />} />
                 <Route path="users" element={<UserDetailsPage />} />
+                <Route path="settings" element={<AdminSettings />} />
               </Route>
             </Route>
           </Route>

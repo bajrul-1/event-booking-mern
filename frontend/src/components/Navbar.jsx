@@ -82,6 +82,7 @@ const CustomUserButton = () => {
 function Header() {
     const dispatch = useDispatch();
     const theme = useSelector((state) => state.theme.theme);
+    const { data: settings } = useSelector((state) => state.settings); // ADDED
     const [isOpen, setIsOpen] = useState(false);
 
     const handleThemeToggle = () => dispatch(toggleTheme());
@@ -91,7 +92,7 @@ function Header() {
 
     const { getToken } = useAuth();
     const { isSignedIn, user, isLoaded } = useUser();
-    
+
     useEffect(() => {
         const syncUserData = async () => {
             if (isSignedIn && isLoaded && !sessionStorage.getItem('userSynced')) {
@@ -131,7 +132,7 @@ function Header() {
             <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 h-16 relative">
                 {/* Left Section: Logo */}
                 <div className="flex-shrink-0">
-                    <NavLink to="/" className="text-2xl font-bold text-primary-500 font-heading">EventBooking</NavLink>
+                    <NavLink to="/" className="text-2xl font-bold text-primary-500 font-heading">{settings?.siteName || 'EventBooking'}</NavLink>
                 </div>
 
                 {/* Middle Section: Desktop Nav (Centered) */}

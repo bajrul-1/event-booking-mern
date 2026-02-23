@@ -3,10 +3,12 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ArrowLeft, Trash2, Reply, Calendar, User, Mail, Clock } from 'lucide-react';
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 
 const AdminMessageDetails = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { data: settings } = useSelector((state) => state.settings); // ADDED
     const [message, setMessage] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -48,7 +50,7 @@ const AdminMessageDetails = () => {
         // Formatted Body
         const greeting = `Dear ${message.name},\n\nThank you for reaching out to us. We have received your message regarding "${message.subject}".`;
         const replyPlaceholder = `\n\n[ ... WRITE YOUR REPLY HERE ... ]\n\n`;
-        const closing = `Best Regards,\nEventBooking Support Team`;
+        const closing = `Best Regards,\n${settings?.siteName || 'EventBooking'} Support Team`;
 
         const originalMessageDivider = `\n\n--------------------------------------------------\nOriginal Message:\nFrom: ${message.name} <${message.email}>\nSent: ${new Date(message.createdAt).toLocaleString()}\n\n${message.message}`;
 

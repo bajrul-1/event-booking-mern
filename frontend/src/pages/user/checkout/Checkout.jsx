@@ -18,6 +18,7 @@ function Checkout() {
     const { getToken } = useAuth();
 
     const { currentEvent: event, status } = useSelector((state) => state.events);
+    const { data: settings } = useSelector((state) => state.settings); // ADDED
 
     // States
     const [appliedCoupon, setAppliedCoupon] = useState(null);
@@ -139,7 +140,7 @@ function Checkout() {
                 key: orderData.key_id,
                 amount: orderData.razorpayOrder.amount,
                 currency: orderData.razorpayOrder.currency,
-                name: "EventBooking",
+                name: settings?.siteName || "EventBooking",
                 description: `Booking for ${event.title}`,
                 order_id: orderData.razorpayOrder.id,
                 handler: async function (response) {

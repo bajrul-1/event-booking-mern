@@ -29,6 +29,10 @@ const contactSchema = new mongoose.Schema({
         type: String, // Store Clerk User ID if available
         default: null
     },
+    isRead: {
+        type: Boolean,
+        default: false
+    },
     createdAt: {
         type: Date,
         default: Date.now

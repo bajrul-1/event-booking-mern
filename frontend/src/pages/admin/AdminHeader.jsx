@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Menu, Sun, Moon, Maximize, Bell, ChevronDown, UserCog, LockKeyhole } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { markAsRead } from '../../redux/features/notifications/notificationsSlice.js';
+import { markAsRead, markOneAsRead, clearNotifications } from '../../redux/features/notifications/notificationsSlice.js';
 import axios from 'axios';
 
 function AdminHeader({ isSidebarOpen, setIsSidebarOpen }) {
@@ -18,19 +18,36 @@ function AdminHeader({ isSidebarOpen, setIsSidebarOpen }) {
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [isNotifOpen, setIsNotifOpen] = useState(false);
 
-    const handleNotifToggle = async () => {
+    const handleNotifToggle = () => {
         setIsNotifOpen(!isNotifOpen);
         setIsProfileOpen(false);
-        if (!isNotifOpen && unreadCount > 0) {
+    };
+
+    const handleNotificationClick = async (n) => {
+        setIsNotifOpen(false);
+        if (!n.isRead) {
             try {
                 const token = localStorage.getItem('organizerToken');
-                await axios.put(`${import.meta.env.VITE_API_URL}/api/notifications/mark-read`, {}, {
+                await axios.put(`${import.meta.env.VITE_API_URL}/api/notifications/${n._id}/mark-read`, {}, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
-                dispatch(markAsRead());
+                dispatch(markOneAsRead(n._id));
             } catch (error) {
-                console.error("Failed to mark notifications as read on server:", error);
+                console.error("Failed to mark notification as read:", error);
             }
+        }
+    };
+
+    const handleClearNotifications = async () => {
+        try {
+            const token = localStorage.getItem('organizerToken');
+            await axios.delete(`${import.meta.env.VITE_API_URL}/api/notifications/clear`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            dispatch(clearNotifications());
+            setIsNotifOpen(false);
+        } catch (error) {
+            console.error("Failed to clear notifications:", error);
         }
     };
 
@@ -128,6 +145,14 @@ function AdminHeader({ isSidebarOpen, setIsSidebarOpen }) {
                             >
                                 <div className="p-3 border-b dark:border-neutral-700 flex justify-between items-center bg-neutral-50 dark:bg-neutral-800/50">
                                     <h3 className="font-semibold text-neutral-800 dark:text-neutral-100">Notifications</h3>
+                                    {notifs.length > 0 && (
+                                        <button
+                                            onClick={handleClearNotifications}
+                                            className="text-xs font-medium text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 transition-colors"
+                                        >
+                                            Clear All
+                                        </button>
+                                    )}
                                 </div>
                                 <div className="max-h-80 overflow-y-auto">
                                     {notifs.length === 0 ? (
@@ -142,7 +167,7 @@ function AdminHeader({ isSidebarOpen, setIsSidebarOpen }) {
                                                             ? 'bg-primary-50/50 dark:bg-primary-900/10 hover:bg-primary-100 dark:hover:bg-primary-900/30'
                                                             : 'hover:bg-neutral-100 dark:hover:bg-neutral-700'
                                                         }`}
-                                                    onClick={() => setIsNotifOpen(false)}
+                                                    onClick={() => handleNotificationClick(n)}
                                                 >
                                                     <div className="flex justify-between items-start mb-1">
                                                         <p className={`text-sm ${!n.isRead ? 'font-bold text-primary-600 dark:text-primary-400' : 'font-semibold text-neutral-800 dark:text-neutral-100'}`}>

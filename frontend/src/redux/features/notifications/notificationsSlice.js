@@ -22,6 +22,14 @@ const notificationsSlice = createSlice({
             // Also mark items as read locally for immediate UI update
             state.items = state.items.map(n => ({ ...n, isRead: true }));
         },
+        markOneAsRead: (state, action) => {
+            const id = action.payload;
+            const notification = state.items.find(n => n._id === id);
+            if (notification && !notification.isRead) {
+                notification.isRead = true;
+                state.unreadCount = Math.max(0, state.unreadCount - 1);
+            }
+        },
         clearNotifications: (state) => {
             state.items = [];
             state.unreadCount = 0;
@@ -29,5 +37,5 @@ const notificationsSlice = createSlice({
     },
 });
 
-export const { setNotifications, addNotification, markAsRead, clearNotifications } = notificationsSlice.actions;
+export const { setNotifications, addNotification, markAsRead, markOneAsRead, clearNotifications } = notificationsSlice.actions;
 export default notificationsSlice.reducer;
