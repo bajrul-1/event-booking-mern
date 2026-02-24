@@ -101,52 +101,57 @@ function Events() {
 
 
   return (
-    <main className="bg-neutral-100 dark:bg-neutral-950 min-h-screen transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Search and Filter Bar Section */}
-        <div className="bg-white dark:bg-neutral-800 p-6 rounded-2xl shadow-lg mb-12 border border-neutral-200 dark:border-neutral-700">
-          <h1 className="text-3xl font-bold font-heading text-neutral-800 dark:text-gray-100 mb-4">Find Your Next Experience</h1>
-          <SearchFilterBar />
-        </div>
+    <>
+      <title>All Events - Browse Upcoming Shows & Concerts | EventBooking</title>
+      <meta name="description" content="Explore and filter hundreds of upcoming events across all categories. Find your next favorite concert, tech roundup, or meetup with EventBooking." />
 
-        {/* Events List Section */}
-        <div>
-          {status === 'loading' && <LoadingState />}
-          {status === 'failed' && <ErrorState message={error} />}
-          {status === 'succeeded' && (
-            currentEvents.length > 0 ? (
-              <div className="space-y-8">
-                {currentEvents.map((event, index) => {
-                  if (currentEvents.length === index + 1) {
-                    return (
-                      <div ref={lastEventElementRef} key={event._id}>
-                        <EventListItem event={event} />
-                      </div>
-                    );
-                  } else {
-                    return <EventListItem key={event._id} event={event} />;
-                  }
-                })}
+      <main className="bg-neutral-100 dark:bg-neutral-950 min-h-screen transition-colors duration-300">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          {/* Search and Filter Bar Section */}
+          <div className="bg-white dark:bg-neutral-800 p-6 rounded-2xl shadow-lg mb-12 border border-neutral-200 dark:border-neutral-700">
+            <h1 className="text-3xl font-bold font-heading text-neutral-800 dark:text-gray-100 mb-4">Find Your Next Experience</h1>
+            <SearchFilterBar />
+          </div>
 
-                {/* Loading More Indicator */}
-                {hasMore ? (
-                  <div className="flex justify-center py-8">
-                    <LoaderCircle size={32} className="animate-spin text-primary-500" />
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-center justify-center py-12 text-neutral-500 dark:text-neutral-400 opacity-60">
-                    <div className="w-12 h-1 bg-neutral-200 dark:bg-neutral-800 rounded-full mb-3"></div>
-                    <p className="text-sm font-medium tracking-wide">You've reached the end of the list</p>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <EmptyState />
-            )
-          )}
+          {/* Events List Section */}
+          <div>
+            {status === 'loading' && <LoadingState />}
+            {status === 'failed' && <ErrorState message={error} />}
+            {status === 'succeeded' && (
+              currentEvents.length > 0 ? (
+                <div className="space-y-8">
+                  {currentEvents.map((event, index) => {
+                    if (currentEvents.length === index + 1) {
+                      return (
+                        <div ref={lastEventElementRef} key={event._id}>
+                          <EventListItem event={event} />
+                        </div>
+                      );
+                    } else {
+                      return <EventListItem key={event._id} event={event} />;
+                    }
+                  })}
+
+                  {/* Loading More Indicator */}
+                  {hasMore ? (
+                    <div className="flex justify-center py-8">
+                      <LoaderCircle size={32} className="animate-spin text-primary-500" />
+                    </div>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center py-12 text-neutral-500 dark:text-neutral-400 opacity-60">
+                      <div className="w-12 h-1 bg-neutral-200 dark:bg-neutral-800 rounded-full mb-3"></div>
+                      <p className="text-sm font-medium tracking-wide">You've reached the end of the list</p>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <EmptyState />
+              )
+            )}
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </>
   );
 }
 

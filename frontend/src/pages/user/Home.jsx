@@ -31,6 +31,10 @@ function Home() {
 
     return (
         <>
+            <title>EventBooking - Discover & Book Amazing Events</title>
+            <meta name="description" content="Join the biggest events in your city. Browse music concerts, tech meetups, and workshops. Book your tickets easily and securely." />
+            <meta name="keywords" content="events, booking, tickets, concert, meetup, workshop, online booking" />
+
             <HomeHeroSection
                 backgroundImage="https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?q=80&w=2070&auto-format&fit-crop"
                 eventImage="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1974&auto-format&fit-crop"

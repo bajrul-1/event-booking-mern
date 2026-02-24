@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /organizer/
+
+Sitemap: https://event-booking-bajrul.netlify.app/sitemap.xml

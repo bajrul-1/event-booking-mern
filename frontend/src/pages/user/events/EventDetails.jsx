@@ -84,6 +84,11 @@ function EventDetails() {
 
     return (
         <div className="bg-white dark:bg-neutral-900">
+            {/* Dynamic SEO Tags */}
+            <title>{event.title} - EventTickets | EventBooking</title>
+            <meta name="description" content={`Book tickets for ${event.title} at ${event.location}. ${event.description?.substring(0, 150) || 'Join this amazing event'}...`} />
+            <meta name="keywords" content={`${event.title}, ${event.category?.name || 'event'}, tickets, ${event.location}`} />
+
             <div className="max-w-7xl mx-auto px-4 py-12">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <div className="lg:col-span-2">
